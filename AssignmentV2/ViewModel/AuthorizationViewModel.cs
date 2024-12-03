@@ -1,13 +1,17 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using AssignmentV2.DataBase.Tables;
+using AssignmentV2.ReadModels.Tables;
+using AssignmentV2.Utilities;
+using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using static AssignmentV2.ViewModel.AuthorizationViewModel;
 
 namespace AssignmentV2.ViewModel
 {
 	public partial class AuthorizationViewModel : INotifyPropertyChanged
 	{
-		public delegate int LoggedIn();
+		public delegate void LoggedIn(User user);
 		public event LoggedIn? OnLoggedIn;
 
 		#region Properties
@@ -38,13 +42,25 @@ namespace AssignmentV2.ViewModel
 				OnPropertyChanged("password");
 			}
 		}
-		#endregion
+        #endregion
 
-		#region Commands
-		[RelayCommand]
+        #region Commands
+        [RelayCommand]
 		private void Authorization()
 		{
-			MessageBox.Show(Password);
+			Task.Run(async () =>
+			{
+				UsersTable usersTable = new();
+				var user = (await usersTable.Select())?.Where(x => x.login == login && x.password == password).SingleOrDefault();
+				if (user == null)
+				{
+					CustomMessageBox.Information("Пользователь не найден.");
+				}
+				else
+				{
+					OnLoggedIn?.Invoke(user);
+                }
+			});
 		}
 		#endregion
 
