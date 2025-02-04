@@ -1,11 +1,9 @@
-﻿using AssignmentV2.DataBase.Tables;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using AssignmentV2.ReadModels.Tables;
+using AssignmentV2.Services;
 using AssignmentV2.Utilities;
 using CommunityToolkit.Mvvm.Input;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using static AssignmentV2.ViewModel.AuthorizationViewModel;
 
 namespace AssignmentV2.ViewModel
 {
@@ -15,8 +13,8 @@ namespace AssignmentV2.ViewModel
 		public event LoggedIn? OnLoggedIn;
 
 		#region Properties
-		private string? login;
-		public string? Login
+		private string login = string.Empty;
+		public string Login
 		{
 			get
 			{
@@ -29,8 +27,8 @@ namespace AssignmentV2.ViewModel
 			}
 		}
 
-		private string? password;
-		public string? Password
+		private string password = string.Empty;
+		public string Password
 		{
 			get
 			{
@@ -42,24 +40,31 @@ namespace AssignmentV2.ViewModel
 				OnPropertyChanged("password");
 			}
 		}
-        #endregion
+		#endregion
 
-        #region Commands
-        [RelayCommand]
+		#region Commands
+		[RelayCommand]
 		private void Authorization()
 		{
+			if (Login == string.Empty)
+			{
+				CustomMessageBox.Information("Логин не должен быть пустым.");
+				return;
+			}
+
 			Task.Run(async () =>
 			{
-				UsersTable usersTable = new();
-				var user = (await usersTable.Select())?.Where(x => x.login == login && x.password == password).SingleOrDefault();
-				if (user == null)
+				UsersService usersTable = new();
+				var result = await usersTable.IsUserCorrect(Login, Password);
+				if (!result)
 				{
 					CustomMessageBox.Information("Пользователь не найден.");
 				}
 				else
 				{
-					OnLoggedIn?.Invoke(user);
-                }
+					var user = await usersTable.GetUserByLoginAsync(Login);
+					OnLoggedIn?.Invoke(user!);
+				}
 			});
 		}
 		#endregion

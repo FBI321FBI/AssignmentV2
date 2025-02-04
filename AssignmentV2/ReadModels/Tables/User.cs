@@ -5,16 +5,11 @@
         /// <summary>
         /// Идентификатор.
         /// </summary>
-        public long Id { get; set; }
+        public long id { get; set; }
 
         /// <summary>
         /// Логин.
         /// </summary>
         public string? login { get; set; }
-
-        /// <summary>
-        /// Пароль.
-        /// </summary>
-        public string? password { get; set; }
     }
 }

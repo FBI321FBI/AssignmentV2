@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="AssignmentV2.View.UserControls.ProjectPanel.ProjectPanelUserControl"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:viewmodels="clr-namespace:AssignmentV2.ViewModel.ProjectPanel"
+			 xmlns:local="clr-namespace:AssignmentV2.View.UserControls"
+			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+			 mc:Ignorable="d">
+	<UserControl.Resources>
+		<ResourceDictionary x:Name="ResourseDictionary" Source="/Styles/DefaultStyles.xaml"/>
+	</UserControl.Resources>
+
+	<UserControl.DataContext>
+		<viewmodels:ProjectPanelViewModel x:Name="ProjectPanelViewModel"/>
+	</UserControl.DataContext>
+
+	<Grid>
+		<!--Фоновый элемент для прозрачности.-->
+		<Rectangle x:Name="BlackoutMainUserControl" Fill="Black" Opacity="0.3">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="MouseUp">
+					<i:InvokeCommandAction Command="{Binding OpenOrCloseProjectPanelCommandCommand}"/>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</Rectangle>
+		
+		<StackPanel Orientation="Vertical">
+			<ScrollViewer x:Name="SubtopicPanelScrollViewer" Background="#4c5644" Height="100" HorizontalContentAlignment="Center" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+				<StackPanel x:Name="ProjectsStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+					<Button x:Name="AddProjectButton" Content="+" FontSize="30" Height="50" Width="100" Command="{Binding AddNewProjectCommand}" Style="{StaticResource DefaultButtonStyle}"/>
+				</StackPanel>
+			</ScrollViewer>
+			<Rectangle x:Name="BottomRectangle" Height="10" Fill="{StaticResource DefaultBorderBrush2}" Margin="0,0,0,0"/>
+			<Button x:Name="SubtopicPanelButton" Width="25" Height="25" HorizontalAlignment="Right" Margin="0,0,20,0"
+					Command="{Binding OpenOrCloseProjectPanelCommandCommand}"
+					Style="{StaticResource DefaultButtonToolBarStyle}" 
+					BorderBrush="{StaticResource DefaultBorderBrush2}" 
+					Background="{StaticResource DefaultBorderBrush2}">
+				<Label Content="▼" Foreground="{StaticResource DefaultButtonTextForeground}"/>
+			</Button>
+		</StackPanel>
+	</Grid>
+</UserControl>
