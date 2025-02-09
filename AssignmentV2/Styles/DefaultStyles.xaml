@@ -192,18 +192,20 @@
         <Setter Property="Background" Value="{StaticResource DefaultBackGround}"/>
         <Setter Property="Foreground" Value="{StaticResource DefaultButtonTextForeground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="5"/>
-        <Setter Property="Template">
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"
-					BorderBrush="{TemplateBinding BorderBrush}"
-					BorderThickness="{TemplateBinding BorderThickness}">
-                        <ContentPresenter Content="{TemplateBinding Content}"
-								  HorizontalAlignment="Center"
-								  VerticalAlignment="Center"/>
-                    </Border>
+					<Border Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}">
+						<Label Content="{TemplateBinding Content}"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   Background="{TemplateBinding Background}"
+							   Foreground="{TemplateBinding Foreground}"
+							   Padding="{TemplateBinding Padding}"/>
+					</Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -216,4 +218,26 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+	<Style x:Key="LabelDefaultStyle" TargetType="Label">
+		<Setter Property="Content" Value=""/>
+		<Setter Property="Background" Value="{StaticResource DefaultBackGround}"/>
+		<Setter Property="Foreground" Value="{StaticResource DefaultTextForegroundSelected}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Label">
+					<Border Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}">
+						<ContentPresenter Content="{TemplateBinding Content}"
+							  HorizontalAlignment="Center"
+							  VerticalAlignment="Center"
+							  Margin="5"/>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 </ResourceDictionary>

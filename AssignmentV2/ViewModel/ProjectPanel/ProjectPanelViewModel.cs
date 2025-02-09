@@ -58,7 +58,7 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 			{
 				_userControl.ProjectsStackPanel.Children.Insert(0, new Button
 				{
-					Content = project.Name,
+					Content = project.name,
 					Style = (Style)Application.Current.Resources["DefaultButtonStyle"],
 					FontSize = 15,
 					Height = 50,

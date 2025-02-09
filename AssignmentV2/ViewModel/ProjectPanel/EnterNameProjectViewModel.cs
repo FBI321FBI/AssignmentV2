@@ -1,4 +1,5 @@
 ﻿using AssignmentV2.ReadModels.Projects;
+using AssignmentV2.Services.DataBase;
 using AssignmentV2.View.UserControls.ProjectPanel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
@@ -17,16 +18,19 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 
 		#region Commands
 		[RelayCommand]
-		public void CreateProject()
+		public async void CreateProject()
 		{
 			if(_projectPanelViewModel is not null)
 			{
 				_projectPanelViewModel.AddProjectVisually(new ProjectModel
 				{
-					Id = 1,
-					Name = _userControl?.ProjectNameTextBox.Text ?? "🤔"
+					id = 1,
+					name = _userControl?.ProjectNameTextBox.Text ?? "🤔"
 				});
 				_userControl.Visibility = Visibility.Collapsed;
+
+				await new ProjectService().CreateProject(new ProjectModel { name = _userControl?.ProjectNameTextBox.Text });
+
 				_mainProjectPanelUserControl.EnterNameProjectUserControl.ProjectNameTextBox.Clear();
 			}
 		}

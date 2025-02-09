@@ -2,7 +2,7 @@
 {
 	public class ProjectModel
 	{
-		public ulong Id { get; set; }
-		public string Name { get; set; } = string.Empty;
+		public ulong id { get; set; }
+		public string name { get; set; } = string.Empty;
 	}
 }
