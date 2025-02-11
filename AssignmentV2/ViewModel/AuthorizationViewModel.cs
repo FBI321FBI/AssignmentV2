@@ -2,14 +2,16 @@
 using System.Runtime.CompilerServices;
 using AssignmentV2.ReadModels.Tables;
 using AssignmentV2.Services;
+using AssignmentV2.Services.DataBase;
 using AssignmentV2.Utilities;
 using CommunityToolkit.Mvvm.Input;
+using static AssignmentV2.Constants.Claims;
 
 namespace AssignmentV2.ViewModel
 {
 	public partial class AuthorizationViewModel : INotifyPropertyChanged
 	{
-		public delegate void LoggedIn(User user);
+		public delegate void LoggedIn(UserModel user);
 		public event LoggedIn? OnLoggedIn;
 
 		#region Properties
@@ -55,6 +57,7 @@ namespace AssignmentV2.ViewModel
 			Task.Run(async () =>
 			{
 				UsersService usersTable = new();
+				UsersClaimsService usersClaimsService = new();
 				var result = await usersTable.IsUserCorrect(Login, Password);
 				if (!result)
 				{
@@ -63,6 +66,8 @@ namespace AssignmentV2.ViewModel
 				else
 				{
 					var user = await usersTable.GetUserByLoginAsync(Login);
+					var claims = await usersClaimsService.GetUserClaimsByUserId(user!.id);
+					user.isCanCreateProject = claims?.Where(x => x.id == Guid.Parse(PROJECT_CREATE)).Any() ?? false;
 					OnLoggedIn?.Invoke(user!);
 				}
 			});

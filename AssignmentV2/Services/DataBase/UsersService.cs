@@ -12,13 +12,13 @@ namespace AssignmentV2.Services
 		/// Получение всех пользователей.
 		/// </summary>
 		/// <returns>Пользователи.</returns>
-        public async Task<IEnumerable<User>?> GetAllUsers()
+        public async Task<IEnumerable<UserModel>?> GetAllUsers()
 		{
 			try
 			{
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
-					var result = await conn.QueryAsync<User>("SELECT * FROM users");
+					var result = await conn.QueryAsync<UserModel>("SELECT * FROM users");
 					return result;
 				}
 			}
@@ -34,13 +34,13 @@ namespace AssignmentV2.Services
 		/// </summary>
 		/// <param name="id">Guid</param>
 		/// <returns>Пользователь.</returns>
-		public async Task<IEnumerable<User>?> GetUserByIdAsync(Guid id)
+		public async Task<IEnumerable<UserModel>?> GetUserByIdAsync(Guid id)
 		{
 			try
 			{
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
-					var result = await conn.QueryAsync<User>("SELECT * FROM users WHERE user_id = @Id",
+					var result = await conn.QueryAsync<UserModel>("SELECT * FROM users WHERE user_id = @Id",
 						new { Id = id});
 					return result;
 				}
@@ -57,13 +57,13 @@ namespace AssignmentV2.Services
 		/// </summary>
 		/// <param name="login">Логин.</param>
 		/// <returns>пользователь.</returns>
-		public async Task<User?> GetUserByLoginAsync(string login)
+		public async Task<UserModel?> GetUserByLoginAsync(string login)
 		{
 			try
 			{
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
-					return (await conn.QueryAsync<User>("SELECT * FROM users WHERE login = @Login",
+					return (await conn.QueryAsync<UserModel>("SELECT * FROM users WHERE login = @Login",
 						new { Login = login })).SingleOrDefault();
 				}
 			}
