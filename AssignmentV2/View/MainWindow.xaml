@@ -4,6 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:AssignmentV2"
+		xmlns:AdminPanels="clr-namespace:AssignmentV2.View.UserControls.AdminPanels"
 		xmlns:ProjectPanels="clr-namespace:AssignmentV2.View.UserControls.ProjectPanel"
 		xmlns:UserControls="clr-namespace:AssignmentV2.View.UserControls"
 		mc:Ignorable="d"
@@ -36,5 +37,6 @@
         </Border>
         <UserControls:AuthorizationUserControl x:Name="authorizationUserControl" Grid.Row="1" Visibility="Visible"/>
 		<ProjectPanels:MainProjectPanelUserControl x:Name="MainProjectPanelUserControl" Grid.Row="1" Visibility="Collapsed"/>
+		<AdminPanels:AdminPanelUserControl x:Name="AdminPanelUserControl" Grid.Row="1" Visibility="Visible"/>
 	</Grid>
 </Window>

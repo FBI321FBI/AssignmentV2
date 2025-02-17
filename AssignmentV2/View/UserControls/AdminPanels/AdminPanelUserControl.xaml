@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="AssignmentV2.View.UserControls.AdminPanels.AdminPanelUserControl"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:local="clr-namespace:AssignmentV2.View.UserControls.AdminPanels"
+			 xmlns:viewmodels="clr-namespace:AssignmentV2.ViewModel"
+			 mc:Ignorable="d" 
+			 d:DesignHeight="1080" d:DesignWidth="1920">
+	
+	<UserControl.DataContext>
+		<viewmodels:AdminPanelViewModel x:Name="AdminPanelViewModel"/>
+	</UserControl.DataContext>
+	
+	<Grid>
+		<StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
+			<Button Style="{StaticResource DefaultButtonStyle}" Command="{Binding OpenAndCloseAdminPanelCommand}" VerticalAlignment="Center" Content="🔧" MaxHeight="35" MaxWidth="35" FontSize="25" Margin="0,0,1,0"/>
+			<Border x:Name="AdminPanelBorder" Width="205" Style="{StaticResource DefaultBorderStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">
+				<StackPanel x:Name="AdminPanelStackPanel" Orientation="Vertical">
+					<Button Style="{StaticResource DefaultButtonStyle}" Content="Управление пользователями" Margin="5"/>
+				</StackPanel>
+			</Border>
+		</StackPanel>
+	</Grid>
+</UserControl>
