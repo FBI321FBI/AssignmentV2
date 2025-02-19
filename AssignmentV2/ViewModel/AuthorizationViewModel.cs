@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using AssignmentV2.ReadModels;
 using AssignmentV2.ReadModels.Tables;
 using AssignmentV2.Services;
 using AssignmentV2.Services.DataBase;
@@ -11,7 +12,7 @@ namespace AssignmentV2.ViewModel
 {
 	public partial class AuthorizationViewModel : INotifyPropertyChanged
 	{
-		public delegate void LoggedIn(UserModel user);
+		public delegate void LoggedIn(UserReadModel user);
 		public event LoggedIn? OnLoggedIn;
 
 		#region Properties
@@ -57,7 +58,7 @@ namespace AssignmentV2.ViewModel
 			Task.Run(async () =>
 			{
 				UsersService usersTable = new();
-				UsersClaimsService usersClaimsService = new();
+				UserService userService = new UserService();
 				var result = await usersTable.IsUserCorrect(Login, Password);
 				if (!result)
 				{
@@ -66,9 +67,10 @@ namespace AssignmentV2.ViewModel
 				else
 				{
 					var user = await usersTable.GetUserByLoginAsync(Login);
-					var claims = await usersClaimsService.GetUserClaimsByUserId(user!.id);
-					user.isCanCreateProject = claims?.Where(x => x.id == Guid.Parse(PROJECT_CREATE)).Any() ?? false;
-					OnLoggedIn?.Invoke(user!);
+					Repository.SetUser(new ReadModels.UserReadModel { id = user!.id, login = user.login });
+					await userService.FillUserClaims(Repository.User!);
+					await userService.FillUserProjects(Repository.User!);
+					OnLoggedIn?.Invoke(Repository.User!);
 				}
 			});
 		}

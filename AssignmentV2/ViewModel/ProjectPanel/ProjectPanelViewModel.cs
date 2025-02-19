@@ -1,10 +1,14 @@
-﻿using AssignmentV2.ReadModels.Projects;
+﻿using AssignmentV2.ReadModels;
+using AssignmentV2.ReadModels.Projects;
+using AssignmentV2.Services;
+using AssignmentV2.Utilities;
 using AssignmentV2.View.UserControls.ProjectPanel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
@@ -18,6 +22,7 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 		private double _defaultOpacityBlackOutProjectPanel;
 		private ProjectPanelUserControl? _userControl => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl?.ProjectPanelUserControl;
 		private MainProjectPanelUserControl? _mainProjectPanelUserControl => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl;
+		private MainWindow? _mainWindow => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
 		#endregion
 
 		#region .ctor
@@ -52,19 +57,45 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 		#endregion
 
 		#region Public
-		public void AddProjectVisually(ProjectModel project)
+		public void AddProjectVisually(ProjectReadModel project)
 		{
 			if (_userControl is not null)
 			{
-				_userControl.ProjectsStackPanel.Children.Insert(0, new Button
+				var button = new Button
 				{
 					Content = project.name,
 					Style = (Style)Application.Current.Resources["DefaultButtonStyle"],
 					FontSize = 15,
 					Height = 50,
 					Width = 100,
-					Margin = new Thickness(0,0,5,0)
+					Margin = new Thickness(0, 0, 5, 0)
+				};
+
+				button.MouseRightButtonDown += (sender, e) =>
+				{
+					var mouseX = e.GetPosition(null).X;
+					var mouseY = e.GetPosition(null).Y;
+
+					Canvas.SetLeft(_mainWindow.ProjectManagmentToolUserControl, mouseX);
+					Canvas.SetTop(_mainWindow.ProjectManagmentToolUserControl, mouseY);
+
+					_mainWindow.ProjectManagmentToolUserControlCanvas.Visibility = Visibility.Visible;
+					var projectManagmentToolViewModel = (ProjectManagmentToolViewModel)_mainWindow.ProjectManagmentToolUserControl.DataContext;
+					projectManagmentToolViewModel.SelectedProject = project;
+				};
+
+				button.Click += (sender, e) =>
+				{
+					MessageBox.Show("Вы открыли проет" + project.id);
+				};
+
+				new ProjectService().AddProjectInRepository(new ProjectInProjectPanelReadModel
+				{
+					Project = project,
+					Button = button,
 				});
+
+				_userControl.ProjectsStackPanel.Children.Insert(0, button);
 			}
 		}
 

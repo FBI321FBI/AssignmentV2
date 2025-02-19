@@ -11,6 +11,7 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 	public partial class EnterNameProjectViewModel : INotifyPropertyChanged
 	{
 		#region Properties
+		private MainWindow? _mainWindow => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
 		private MainProjectPanelUserControl? _mainProjectPanelUserControl => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl;
 		private ProjectPanelViewModel? _projectPanelViewModel => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl?.ProjectPanelUserControl.DataContext as ProjectPanelViewModel;
 		private EnterNameProjectUserControl? _userControl => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl?.EnterNameProjectUserControl;
@@ -22,14 +23,16 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 		{
 			if(_projectPanelViewModel is not null)
 			{
-				_projectPanelViewModel.AddProjectVisually(new ProjectModel
+				_projectPanelViewModel.AddProjectVisually(new ProjectReadModel
 				{
-					id = 1,
+					id = Guid.NewGuid(),
 					name = _userControl?.ProjectNameTextBox.Text ?? "🤔"
 				});
 				_userControl.Visibility = Visibility.Collapsed;
 
-				await new ProjectService().CreateProject(new ProjectModel { name = _userControl?.ProjectNameTextBox.Text });
+				_mainWindow.LoadingUserControl.Start();
+				await new ProjectService().CreateProject(new ProjectReadModel { name = _userControl?.ProjectNameTextBox.Text });
+				_mainWindow.LoadingUserControl.Stop();
 
 				_mainProjectPanelUserControl.EnterNameProjectUserControl.ProjectNameTextBox.Clear();
 			}

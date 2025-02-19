@@ -35,8 +35,12 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <UserControls:AuthorizationUserControl x:Name="authorizationUserControl" Grid.Row="1" Visibility="Visible"/>
+		<UserControls:LoadingUserControl x:Name="LoadingUserControl" Grid.Row="1" Visibility="Collapsed" Panel.ZIndex="999"/>
+		<Canvas x:Name="ProjectManagmentToolUserControlCanvas" Grid.ColumnSpan="999" Grid.RowSpan="999" Panel.ZIndex="998" Visibility="Collapsed" MouseLeave="ProjectManagmentToolUserControlCanvas_MouseLeave">
+			<UserControls:ProjectManagmentToolUserControl x:Name="ProjectManagmentToolUserControl"  MinWidth="150"/>
+		</Canvas>
+		<UserControls:AuthorizationUserControl x:Name="authorizationUserControl" Grid.Row="1" Visibility="Visible"/>
 		<ProjectPanels:MainProjectPanelUserControl x:Name="MainProjectPanelUserControl" Grid.Row="1" Visibility="Collapsed"/>
-		<AdminPanels:AdminPanelUserControl x:Name="AdminPanelUserControl" Grid.Row="1" Visibility="Visible"/>
+		<AdminPanels:AdminPanelUserControl x:Name="AdminPanelUserControl" Grid.Row="1" Visibility="Collapsed"/>
 	</Grid>
 </Window>

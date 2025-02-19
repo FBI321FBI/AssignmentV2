@@ -1,8 +1,8 @@
 ﻿namespace AssignmentV2.ReadModels.Projects
 {
-	public class ProjectModel
+	public class ProjectReadModel
 	{
-		public ulong id { get; set; }
+		public Guid id { get; set; }
 		public string name { get; set; } = string.Empty;
 	}
 }

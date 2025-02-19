@@ -39,5 +39,10 @@ namespace AssignmentV2
 		{
 			Application.Current.MainWindow.Close();
 		}
+
+		private void ProjectManagmentToolUserControlCanvas_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			ProjectManagmentToolUserControlCanvas.Visibility = Visibility.Collapsed;
+		}
 	}
 }

@@ -1,46 +1,66 @@
 ﻿using System.Data.SqlClient;
+using AssignmentV2.Constants;
 using AssignmentV2.DataBase.Tables;
 using AssignmentV2.ReadModels.Projects;
 using AssignmentV2.Utilities;
 using Dapper;
-using static AssignmentV2.Constants.Parameters;
-using static AssignmentV2.Constants.DataTypes;
 
 namespace AssignmentV2.Services.DataBase
 {
 	public class ProjectService : BaseTable
 	{
-		public async Task CreateProject(ProjectModel project)
+		public async Task CreateProject(ProjectReadModel project)
 		{
 			try
 			{
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
+					var projectId = Guid.NewGuid();
 					await conn.ExecuteAsync(
 						@"INSERT INTO projects
-						  VALUES (@Name)", 
-						new 
+						  VALUES (@Id ,@Name)",
+						new
 						{
+							Id = projectId,
 							Name = project.name
 						});
 
-					var id = (await conn.QueryAsync<long>("SELECT MAX(id) FROM projects")).Single();
-
 					await conn.ExecuteAsync(
-						@"INSERT INTO projects_parameters(project_id, parameter_id, value, data_type)
-						  VALUES (@ProjectId, @ParameterId, @Value, @DataType)",
+						@"INSERT INTO projects_users_claim(id, project_id, user_id, claim_id)
+						  VALUES (@Id, @ProjectId, @UserId, @ClaimID)",
 						new
 						{
-							ProjectId = id,
-							ParameterId = PROJECT_OWNER,
-							Value = "true",
-							DataType = BOOL_TYPE,
+							Id = Guid.NewGuid(),
+							ProjectId = projectId,
+							UserId = Repository.User.id,
+							ClaimID = Claims.PROJECT_OWNER,
 						});
 				}
 			}
 			catch (Exception ex)
 			{
 				CustomMessageBox.Information(ex.Message);
+			}
+		}
+
+		public async Task<IEnumerable<ProjectUserClaimReadModel>?> GetProjectsUsersClaimsByUserId(Guid id)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					return await conn.QueryAsync<ProjectUserClaimReadModel>(
+						"SELECT puc.id, puc.project_id, puc.user_id, puc.claim_id, p.name FROM projects_users_claim puc JOIN (SELECT id, name FROM projects) as p ON p.id = puc.project_id WHERE user_id = @UserId",
+						new
+						{
+							UserId = id,
+						});
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+				return null;
 			}
 		}
 	}
