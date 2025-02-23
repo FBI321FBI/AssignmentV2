@@ -15,6 +15,11 @@ namespace AssignmentV2
 		/// Активные проекты.
 		/// </summary>
 		public static HashSet<ProjectInProjectPanelReadModel> Projects = new HashSet<ProjectInProjectPanelReadModel>();
+
+		/// <summary>
+		/// Выбранный проект.
+		/// </summary>
+		public static ProjectReadModel? SelectProject;
 		#endregion
 
 		#region Public

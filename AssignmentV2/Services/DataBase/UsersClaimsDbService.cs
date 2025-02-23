@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace AssignmentV2.Services.DataBase
 {
-	public class UsersClaimsService : BaseTable
+	public class UsersClaimsDbService : BaseTable
 	{
 		public async Task CreateUserClaim(UserClaimModel userClaim)
 		{

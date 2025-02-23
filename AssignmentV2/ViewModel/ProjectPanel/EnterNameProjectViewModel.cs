@@ -31,7 +31,7 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 				_userControl.Visibility = Visibility.Collapsed;
 
 				_mainWindow.LoadingUserControl.Start();
-				await new ProjectService().CreateProject(new ProjectReadModel { name = _userControl?.ProjectNameTextBox.Text });
+				await new ProjectDbService().CreateProject(new ProjectReadModel { name = _userControl?.ProjectNameTextBox.Text });
 				_mainWindow.LoadingUserControl.Stop();
 
 				_mainProjectPanelUserControl.EnterNameProjectUserControl.ProjectNameTextBox.Clear();

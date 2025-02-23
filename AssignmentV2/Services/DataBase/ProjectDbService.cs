@@ -7,7 +7,7 @@ using Dapper;
 
 namespace AssignmentV2.Services.DataBase
 {
-	public class ProjectService : BaseTable
+	public class ProjectDbService : BaseTable
 	{
 		public async Task CreateProject(ProjectReadModel project)
 		{

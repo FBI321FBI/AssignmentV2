@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using AssignmentV2.ReadModels;
+using AssignmentV2.Services.DataBase;
 
 namespace AssignmentV2.View.UserControls
 {
@@ -8,7 +10,15 @@ namespace AssignmentV2.View.UserControls
 	/// </summary>
 	public partial class TasksUserControl : UserControl
 	{
+		#region Properties
+		#region Services
+		private TasksDbService _taskDbService = new TasksDbService();
+		#endregion
+
 		private List<StackPanel> _tasksStackPanels = new List<StackPanel>();
+
+		private List<TaskDbReadModel> _tasks = new List<TaskDbReadModel>();
+		#endregion
 
 		public TasksUserControl()
 		{
@@ -16,11 +26,15 @@ namespace AssignmentV2.View.UserControls
 			_tasksStackPanels.Add(TasksStackPanel);
 		}
 
-		private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+		public async Task AddTaskOnPnael(Guid taskId)
 		{
+			var currentTask = await _taskDbService.GetTaskById(taskId);
+
+			if (currentTask is null) return;
+
 			Button button = new Button
 			{
-				Content = "test",
+				Content = currentTask.name,
 				Style = (Style)Application.Current.Resources["DefaultButtonStyle"],
 				Width = 80,
 				Height = 50,
@@ -42,6 +56,11 @@ namespace AssignmentV2.View.UserControls
 			{
 				_tasksStackPanels.Last().Children.Add(button);
 			}
+		}
+
+		private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+		{
+
 		}
 	}
 }

@@ -92,7 +92,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="TextBox">
 					<TextBox x:Name="innerTextBox"
-							 Text="{TemplateBinding Text}"
+							 Text="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}, Mode=TwoWay}"
 							 Background="{TemplateBinding Background}"
 							 Foreground="{TemplateBinding Foreground}"
 							 BorderBrush="{TemplateBinding BorderBrush}"/>

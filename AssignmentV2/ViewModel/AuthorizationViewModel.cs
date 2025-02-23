@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using AssignmentV2.ReadModels;
-using AssignmentV2.ReadModels.Tables;
 using AssignmentV2.Services;
-using AssignmentV2.Services.DataBase;
 using AssignmentV2.Utilities;
 using CommunityToolkit.Mvvm.Input;
-using static AssignmentV2.Constants.Claims;
 
 namespace AssignmentV2.ViewModel
 {
@@ -57,7 +54,7 @@ namespace AssignmentV2.ViewModel
 
 			Task.Run(async () =>
 			{
-				UsersService usersTable = new();
+				UsersDbService usersTable = new();
 				UserService userService = new UserService();
 				var result = await usersTable.IsUserCorrect(Login, Password);
 				if (!result)

@@ -23,6 +23,7 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 		private ProjectPanelUserControl? _userControl => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl?.ProjectPanelUserControl;
 		private MainProjectPanelUserControl? _mainProjectPanelUserControl => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl;
 		private MainWindow? _mainWindow => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+		private TaskService taskService => new TaskService();
 		#endregion
 
 		#region .ctor
@@ -84,8 +85,16 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 					projectManagmentToolViewModel.SelectedProject = project;
 				};
 
-				button.Click += (sender, e) =>
+				button.Click += async (sender, e) =>
 				{
+					Repository.SelectProject = project;
+					var tasks = await taskService.GetTasksByUserId(Repository.User.id);
+					if (tasks is null) return;
+					foreach (var task in tasks)
+					{
+						_mainWindow.TasksUserControl.AddTaskOnPnael(task.id);
+					}
+					_mainWindow.TasksUserControl.Visibility = Visibility.Visible;
 					MessageBox.Show("Вы открыли проет" + project.id);
 				};
 

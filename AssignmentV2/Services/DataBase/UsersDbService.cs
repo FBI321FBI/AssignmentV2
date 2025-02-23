@@ -1,19 +1,18 @@
-﻿using AssignmentV2.DataBase.Tables;
+﻿using System.Data.SqlClient;
+using AssignmentV2.DataBase.Tables;
 using AssignmentV2.ReadModels;
-using AssignmentV2.ReadModels.Tables;
 using AssignmentV2.Utilities;
 using Dapper;
-using System.Data.SqlClient;
 
 namespace AssignmentV2.Services
 {
-	public class UsersService : BaseTable
+	public class UsersDbService : BaseTable
 	{
 		/// <summary>
 		/// Получение всех пользователей.
 		/// </summary>
 		/// <returns>Пользователи.</returns>
-        public async Task<IEnumerable<UserReadModel>?> GetAllUsers()
+		public async Task<IEnumerable<UserReadModel>?> GetAllUsers()
 		{
 			try
 			{
@@ -42,7 +41,7 @@ namespace AssignmentV2.Services
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
 					var result = await conn.QueryAsync<UserReadModel>("SELECT * FROM users WHERE user_id = @Id",
-						new { Id = id});
+						new { Id = id });
 					return result;
 				}
 			}

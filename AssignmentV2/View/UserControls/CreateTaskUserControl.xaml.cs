@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using AssignmentV2.Services;
 
 namespace AssignmentV2.View.UserControls
 {
@@ -20,14 +9,24 @@ namespace AssignmentV2.View.UserControls
 	/// </summary>
 	public partial class CreateTaskUserControl : UserControl
 	{
+		#region Properties
+		private TaskService _taskService;
+		#endregion
+
 		public CreateTaskUserControl()
 		{
 			InitializeComponent();
+			_taskService = new TaskService();
 		}
 
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
 		{
-			CreateTaskUserControl.Visibility = Visibility.Collapsed;
+			UserControl.Visibility = Visibility.Collapsed;
+		}
+
+		private async void CreateButton_Click(object sender, RoutedEventArgs e)
+		{
+			await _taskService.CreateTask(Repository.User.id, Repository.SelectProject.id, NameTextBox.Text, DescriptionTextBox.Text);
 		}
 	}
 }

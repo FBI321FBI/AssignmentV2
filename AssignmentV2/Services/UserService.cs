@@ -10,14 +10,14 @@ namespace AssignmentV2.Services
 	public class UserService
 	{
 		#region Properties
-		private UsersClaimsService _usersClaimsService;
-		private DataBase.ProjectService _projectServiceDb;
+		private UsersClaimsDbService _usersClaimsService;
+		private DataBase.ProjectDbService _projectServiceDb;
 		#endregion
 
 		#region .ctor
 		public UserService()
         {
-            _usersClaimsService = new UsersClaimsService();
+            _usersClaimsService = new UsersClaimsDbService();
 			_projectServiceDb = new();
 
 		}

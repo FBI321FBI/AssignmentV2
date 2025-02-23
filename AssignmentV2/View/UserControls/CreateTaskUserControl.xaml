@@ -6,7 +6,7 @@
 			 xmlns:local="clr-namespace:AssignmentV2.View.UserControls"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="450" d:DesignWidth="800"
-			 x:Name="CreateTaskUserControl">
+			 x:Name="UserControl">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
@@ -18,8 +18,8 @@
 		</Grid.RowDefinitions>
 		<ScrollViewer>
 			<StackPanel Orientation="Vertical">
-				<TextBox Style="{StaticResource DefaultTextBoxWithTagStyle}" Tag="Название"/>
-				<TextBox Style="{StaticResource DefaultTextBoxWithTagStyle}" Tag="Описание"/>
+				<TextBox x:Name="NameTextBox" Style="{StaticResource DefaultTextBoxWithTagStyle}" Tag="Название"/>
+				<TextBox x:Name="DescriptionTextBox" Style="{StaticResource DefaultTextBoxWithTagStyle}" Tag="Описание"/>
 			</StackPanel>
 		</ScrollViewer>
 		<StackPanel Grid.Column="1" Margin="3">
@@ -27,7 +27,7 @@
 			<Button Style="{StaticResource DefaultButtonStyle}" Content="Постников Илья Максимовч"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" Grid.Row="1">
-			<Button x:Name="CreateButton" Content="Создать" Margin="3" Style="{StaticResource DefaultButtonStyle}"/>
+			<Button x:Name="CreateButton" Content="Создать" Margin="3" Style="{StaticResource DefaultButtonStyle}" Click="CreateButton_Click"/>
 			<Button x:Name="CancelButton" Content="Отмена" Margin="3" Style="{StaticResource DefaultButtonStyle}" Click="CancelButton_Click"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
