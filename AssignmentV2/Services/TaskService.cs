@@ -1,8 +1,5 @@
-﻿using System.Data.SqlClient;
-using System.Threading.Tasks;
-using AssignmentV2.ReadModels;
+﻿using AssignmentV2.ReadModels;
 using AssignmentV2.Services.DataBase;
-using AssignmentV2.Utilities;
 using static AssignmentV2.Constants.Claims;
 
 namespace AssignmentV2.Services
@@ -10,25 +7,25 @@ namespace AssignmentV2.Services
 	public class TaskService
 	{
 		#region Properties
-		private readonly TasksDbService _taskService;
+		private readonly TasksDbService _taskDbService;
 		private readonly TasksUsersClaimDbService _tasksUsersClaimDbService;
+
+		private List<UserReadModel> _usersInTask;
 		#endregion
 
 		#region .ctor
 		public TaskService()
 		{
-			_taskService = new TasksDbService();
+			_taskDbService = new TasksDbService();
 			_tasksUsersClaimDbService = new TasksUsersClaimDbService();
+			_usersInTask = new List<UserReadModel>();
 		}
 		#endregion
 
 		#region Public
-		public async Task CreateTask(Guid userId, Guid projectId, string name, string description)
+		public async Task CreateTask(Guid owner, IEnumerable<UserReadModel> participants, Guid taskId, Guid projectId, string name, string description)
 		{
-			var taskId = Guid.NewGuid();
-			var taskUserClaimId = Guid.NewGuid();
-
-			await _taskService.CreateTask(new TaskDbReadModel
+			await _taskDbService.CreateTask(new TaskDbReadModel
 			{
 				id = taskId,
 				project_id = projectId,
@@ -38,11 +35,22 @@ namespace AssignmentV2.Services
 
 			await _tasksUsersClaimDbService.CreateTaskUserClaim(new TasksUsersClaimDbReadModel
 			{
-				id = taskUserClaimId,
+				id = Guid.NewGuid(),
 				task_id = taskId,
-				user_id = userId,
+				user_id = owner,
 				claim_id = Guid.Parse(TASK_OWNER)
 			});
+
+			foreach (var participant in participants)
+			{
+				await _tasksUsersClaimDbService.CreateTaskUserClaim(new TasksUsersClaimDbReadModel
+				{
+					id = Guid.NewGuid(),
+					task_id = taskId,
+					user_id = participant.id,
+					claim_id = Guid.Parse(TASK_PARTICIPANT)
+				});
+			}
 		}
 
 		public async Task<IEnumerable<TaskDbReadModel>?> GetTasksByUserId(Guid userId)
@@ -52,7 +60,7 @@ namespace AssignmentV2.Services
 			if (currentTasks is null) return null;
 			foreach (var currentTask in currentTasks)
 			{
-				var task = await _taskService.GetTaskById(currentTask.task_id);
+				var task = await _taskDbService.GetTaskById(currentTask.task_id);
 				if (task is null) continue;
 				tasks.Add(task);
 			}

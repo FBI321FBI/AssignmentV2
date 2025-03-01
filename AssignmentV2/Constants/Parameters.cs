@@ -3,8 +3,8 @@
 	public static class Parameters
 	{
 		/// <summary>
-		/// Создатель проекта.
+		/// ФИО.
 		/// </summary>
-		public const string PROJECT_OWNER = "1";
+		public const string FIO = "3067eb2f-1aac-4521-b656-a8619f38699f";
 	}
 }

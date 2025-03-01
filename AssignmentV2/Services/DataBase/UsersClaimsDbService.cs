@@ -1,4 +1,5 @@
 ﻿using AssignmentV2.DataBase.Tables;
+using AssignmentV2.ReadModels;
 using AssignmentV2.ReadModels.Projects;
 using AssignmentV2.ReadModels.Tables;
 using AssignmentV2.Utilities;
@@ -45,6 +46,27 @@ namespace AssignmentV2.Services.DataBase
 						new
 						{
 							UserId = id,
+						});
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+				return null;
+			}
+		}
+
+		public async Task<IEnumerable<UserParametersReadModel>> GetUserParameters(Guid userId)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					return await conn.QueryAsync<UserParametersReadModel>(
+						@"select * from users_parameters where user_id = @UserId",
+						new
+						{
+							UserId = userId,
 						});
 				}
 			}

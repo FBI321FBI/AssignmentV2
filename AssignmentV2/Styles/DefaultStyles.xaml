@@ -71,7 +71,8 @@
                                  Text="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}, Mode=TwoWay}"
 								 Background="{TemplateBinding Background}"
 								 Foreground="{TemplateBinding Foreground}"
-								 BorderBrush="{TemplateBinding BorderBrush}"/>
+								 BorderBrush="{TemplateBinding BorderBrush}"
+								 TextWrapping="{TemplateBinding TextWrapping}"/>
 					</StackPanel>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsKeyboardFocusWithin" Value="True">

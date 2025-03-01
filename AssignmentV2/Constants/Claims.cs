@@ -21,5 +21,10 @@
 		/// Создание задачи.
 		/// </summary>
 		public const string TASK_CREATE = "f4d46fde-86af-4d70-9377-d83c9a9716bc";
+
+		/// <summary>
+		/// Участник задачи.
+		/// </summary>
+		public const string TASK_PARTICIPANT = "78836db0-8e52-47a8-8c82-21572199501b";
 	}
 }

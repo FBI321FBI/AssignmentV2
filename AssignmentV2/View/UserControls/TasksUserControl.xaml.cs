@@ -60,10 +60,41 @@ namespace AssignmentV2.View.UserControls
 			}
 		}
 
+		public void ClearTasks()
+		{
+			//StackPanel stackPanel = new StackPanel
+			//{
+			//	Orientation = Orientation.Horizontal,
+			//};
+			//Button button = new Button
+			//{
+			//	Name = "AddTaskButton",
+			//	Width = 310,
+			//	Height = 150,
+			//	Style = (Style)Application.Current.Resources["DefaultButtonStyle"],
+			//	Content = "+",
+			//	FontSize = 25,
+			//	HorizontalAlignment = HorizontalAlignment.Center,
+			//	Margin = new Thickness(3),
+			//};
+			//button.Click += (s, e) =>
+			//{
+			//	MainWindowService.GetUserControlInMainWindow<CreateTaskUserControl>()!.Visibility = Visibility.Visible;
+			//	MainWindowService.GetUserControlInMainWindow<MainProjectPanelUserControl>()!.Visibility = Visibility.Collapsed;
+			//};
+			//stackPanel.Children.Add(button);
+			_tasksStackPanels.Clear();
+			for(int i = 1; i < TasksStackPanel.Children.Count; i++)
+			{
+				TasksStackPanel.Children.RemoveAt(i);
+			}
+			_tasksStackPanels.Add(TasksStackPanel);
+		}
+
 		private void AddTaskButton_Click(object sender, RoutedEventArgs e)
 		{
 			MainWindowService.GetUserControlInMainWindow<CreateTaskUserControl>()!.Visibility = Visibility.Visible;
-			MainWindowService.GetUserControlInMainWindow<MainProjectPanelUserControl>()!.Visibility= Visibility.Collapsed;
+			MainWindowService.GetUserControlInMainWindow<MainProjectPanelUserControl>()!.Visibility = Visibility.Collapsed;
 		}
 	}
 }
