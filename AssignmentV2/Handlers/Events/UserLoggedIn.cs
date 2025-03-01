@@ -31,6 +31,11 @@ namespace AssignmentV2.Handlers.Events
 			{
 				_mainWindow.MainProjectPanelUserControl.ProjectPanelUserControl.AddProjectButton.Visibility = Visibility.Collapsed;
 			}
+
+			if (!user.isCanCreateTask)
+			{
+				_mainWindow.TasksUserControl.AddTaskButton.Visibility = Visibility.Collapsed;
+			}
 		}
 
 		private static void LoadProjects(UserReadModel user)

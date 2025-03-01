@@ -31,6 +31,7 @@ namespace AssignmentV2.Services
 			var claims = await _usersClaimsService.GetUserClaimsByUserId(user.id);
 
 			user.isCanCreateProject = claims?.Where(x => x.id == Guid.Parse(PROJECT_CREATE)).Any() ?? false;
+			user.isCanCreateTask = claims?.Where(x => x.id == Guid.Parse(TASK_CREATE)).Any() ?? false;
 		}
 
 		public async Task FillUserProjects(UserReadModel user)

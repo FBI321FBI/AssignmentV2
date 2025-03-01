@@ -20,6 +20,11 @@ namespace AssignmentV2.ReadModels
 		public bool isCanCreateProject { get; set; }
 
 		/// <summary>
+		/// Право на создание задачи.
+		/// </summary>
+		public bool isCanCreateTask { get; set; }
+
+		/// <summary>
 		/// Созданные проекты.
 		/// </summary>
 		public IEnumerable<ProjectUserClaimReadModel> projects { get; set; }

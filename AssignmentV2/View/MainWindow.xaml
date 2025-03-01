@@ -43,5 +43,6 @@
 		<ProjectPanels:MainProjectPanelUserControl x:Name="MainProjectPanelUserControl" Grid.Row="1" Panel.ZIndex="997" Visibility="Collapsed"/>
 		<AdminPanels:AdminPanelUserControl x:Name="AdminPanelUserControl" Grid.Row="1" Visibility="Collapsed"/>
 		<UserControls:TasksUserControl x:Name="TasksUserControl"  Grid.Row="1" Visibility="Collapsed"/>
+		<UserControls:CreateTaskUserControl x:Name="CreateTaskUserControl" Grid.Row="1" Visibility="Collapsed"/>
 	</Grid>
 </Window>

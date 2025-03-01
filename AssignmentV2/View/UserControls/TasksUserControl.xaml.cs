@@ -1,7 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using AssignmentV2.ReadModels;
+using AssignmentV2.Services;
 using AssignmentV2.Services.DataBase;
+using AssignmentV2.View.UserControls.ProjectPanel;
 
 namespace AssignmentV2.View.UserControls
 {
@@ -36,13 +38,13 @@ namespace AssignmentV2.View.UserControls
 			{
 				Content = currentTask.name,
 				Style = (Style)Application.Current.Resources["DefaultButtonStyle"],
-				Width = 80,
-				Height = 50,
+				Width = 315,
+				Height = 150,
 				Margin = new Thickness(3),
 				FontSize = 10
 			};
 
-			if (_tasksStackPanels.Last().Children.Count == 8)
+			if (_tasksStackPanels.Last().Children.Count == 6)
 			{
 				StackPanel taskPanel = new StackPanel
 				{
@@ -60,7 +62,8 @@ namespace AssignmentV2.View.UserControls
 
 		private void AddTaskButton_Click(object sender, RoutedEventArgs e)
 		{
-
+			MainWindowService.GetUserControlInMainWindow<CreateTaskUserControl>()!.Visibility = Visibility.Visible;
+			MainWindowService.GetUserControlInMainWindow<MainProjectPanelUserControl>()!.Visibility= Visibility.Collapsed;
 		}
 	}
 }

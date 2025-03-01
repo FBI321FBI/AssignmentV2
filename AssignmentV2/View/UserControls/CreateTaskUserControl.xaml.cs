@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using AssignmentV2.Services;
+using AssignmentV2.View.UserControls.ProjectPanel;
 
 namespace AssignmentV2.View.UserControls
 {
@@ -22,6 +23,7 @@ namespace AssignmentV2.View.UserControls
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
 		{
 			UserControl.Visibility = Visibility.Collapsed;
+			MainWindowService.GetUserControlInMainWindow<MainProjectPanelUserControl>()!.Visibility = Visibility.Visible;
 		}
 
 		private async void CreateButton_Click(object sender, RoutedEventArgs e)

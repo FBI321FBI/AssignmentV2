@@ -5,34 +5,35 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:AssignmentV2.View.UserControls"
 			 mc:Ignorable="d" 
-			 d:DesignHeight="450" d:DesignWidth="800"
+			 d:DesignHeight="1080" d:DesignWidth="1920"
 			 x:Name="UserControl">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
-			<ColumnDefinition Width="250"/>
+			<ColumnDefinition Width="450"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition/>
-			<RowDefinition Height="25"/>
+			<RowDefinition Height="75"/>
 		</Grid.RowDefinitions>
-		<ScrollViewer>
-			<StackPanel Orientation="Vertical">
-				<TextBox x:Name="NameTextBox" Style="{StaticResource DefaultTextBoxWithTagStyle}" Tag="Название"/>
-				<TextBox x:Name="DescriptionTextBox" Style="{StaticResource DefaultTextBoxWithTagStyle}" Tag="Описание"/>
+		<Rectangle Fill="{StaticResource DefaultBackGround}" Grid.ColumnSpan="999" Grid.RowSpan="999"/>
+		<ScrollViewer  Margin="25">
+			<StackPanel Orientation="Vertical" Margin="15">
+				<TextBox x:Name="NameTextBox" Style="{StaticResource DefaultTextBoxWithTagStyle}" Tag="Название" FontSize="25"/>
+				<TextBox x:Name="DescriptionTextBox" Style="{StaticResource DefaultTextBoxWithTagStyle}" Tag="Описание" FontSize="25"/>
 			</StackPanel>
 		</ScrollViewer>
-		<StackPanel Grid.Column="1" Margin="3">
-			<Label Content="Участники" Style="{StaticResource LabelDefaultStyle}" Margin="0,0,0,3"/>
-			<Button Style="{StaticResource DefaultButtonStyle}" Content="Постников Илья Максимовч"/>
+		<StackPanel Grid.Column="1" Margin="25">
+			<Label Content="Участники" Style="{StaticResource LabelDefaultStyle}" Margin="0,0,0,3" FontSize="35"/>
+			<Button Style="{StaticResource DefaultButtonStyle}" Content="Постников Илья Максимовч" FontSize="25"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" Grid.Row="1">
-			<Button x:Name="CreateButton" Content="Создать" Margin="3" Style="{StaticResource DefaultButtonStyle}" Click="CreateButton_Click"/>
-			<Button x:Name="CancelButton" Content="Отмена" Margin="3" Style="{StaticResource DefaultButtonStyle}" Click="CancelButton_Click"/>
+			<Button x:Name="CreateButton" Content="Создать" Width="150" Margin="3" FontSize="25" Style="{StaticResource DefaultButtonStyle}" Click="CreateButton_Click"/>
+			<Button x:Name="CancelButton" Content="Отмена" Width="150" Margin="3" FontSize="25" Style="{StaticResource DefaultButtonStyle}" Click="CancelButton_Click"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-			<Button x:Name="AddUserButton" Content="Добавить" Margin="3" Style="{StaticResource DefaultButtonStyle}"/>
-			<Button x:Name="DeleteUserButton" Content="Удалить" Margin="3" Style="{StaticResource DefaultButtonStyle}"/>
+			<Button x:Name="AddUserButton" Content="Добавить" Width="150" FontSize="25" Margin="3" Style="{StaticResource DefaultButtonStyle}"/>
+			<Button x:Name="DeleteUserButton" Content="Удалить" Width="150" FontSize="25" Margin="3" Style="{StaticResource DefaultButtonStyle}"/>
 		</StackPanel>
 	</Grid>
 </UserControl>

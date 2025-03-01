@@ -64,7 +64,7 @@ namespace AssignmentV2.ViewModel
 				else
 				{
 					var user = await usersTable.GetUserByLoginAsync(Login);
-					Repository.SetUser(new ReadModels.UserReadModel { id = user!.id, login = user.login });
+					Repository.SetUser(new UserReadModel { id = user!.id, login = user.login });
 					await userService.FillUserClaims(Repository.User!);
 					await userService.FillUserProjects(Repository.User!);
 					OnLoggedIn?.Invoke(Repository.User!);
