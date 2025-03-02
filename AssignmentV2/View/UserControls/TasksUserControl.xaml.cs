@@ -4,6 +4,7 @@ using AssignmentV2.ReadModels;
 using AssignmentV2.Services;
 using AssignmentV2.Services.DataBase;
 using AssignmentV2.View.UserControls.ProjectPanel;
+using static AssignmentV2.Constants.Parameters;
 
 namespace AssignmentV2.View.UserControls
 {
@@ -15,6 +16,8 @@ namespace AssignmentV2.View.UserControls
 		#region Properties
 		#region Services
 		private TasksDbService _taskDbService = new TasksDbService();
+		private TasksUsersClaimDbService _taskUserClaimDbService = new TasksUsersClaimDbService();
+		private UsersClaimsDbService _usersClaimsDbService = new UsersClaimsDbService();
 		#endregion
 
 		private List<StackPanel> _tasksStackPanels = new List<StackPanel>();
@@ -44,6 +47,20 @@ namespace AssignmentV2.View.UserControls
 				FontSize = 10
 			};
 
+			button.Click += async (s, e) =>
+			{
+				Repository.SelectTask = currentTask;
+				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().NameTextBox.Text = currentTask.name;
+				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().DescriptionTextBox.Text = currentTask.description;
+				var users = (await _taskUserClaimDbService.GetUsersByTask(currentTask.id)).Where(x => x.id != Repository.User.id);
+				foreach(var user in users)
+				{
+					var userFio = (await _usersClaimsDbService.GetUserParameters(user.id)).Where(x => x.parameter_id == Guid.Parse(FIO)).FirstOrDefault().value;
+					MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().AddUserInParticipant(user,userFio);
+				}
+				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().Visibility = Visibility.Visible;
+			};
+
 			if (_tasksStackPanels.Last().Children.Count == 6)
 			{
 				StackPanel taskPanel = new StackPanel
@@ -62,29 +79,12 @@ namespace AssignmentV2.View.UserControls
 
 		public void ClearTasks()
 		{
-			//StackPanel stackPanel = new StackPanel
-			//{
-			//	Orientation = Orientation.Horizontal,
-			//};
-			//Button button = new Button
-			//{
-			//	Name = "AddTaskButton",
-			//	Width = 310,
-			//	Height = 150,
-			//	Style = (Style)Application.Current.Resources["DefaultButtonStyle"],
-			//	Content = "+",
-			//	FontSize = 25,
-			//	HorizontalAlignment = HorizontalAlignment.Center,
-			//	Margin = new Thickness(3),
-			//};
-			//button.Click += (s, e) =>
-			//{
-			//	MainWindowService.GetUserControlInMainWindow<CreateTaskUserControl>()!.Visibility = Visibility.Visible;
-			//	MainWindowService.GetUserControlInMainWindow<MainProjectPanelUserControl>()!.Visibility = Visibility.Collapsed;
-			//};
-			//stackPanel.Children.Add(button);
 			_tasksStackPanels.Clear();
-			for(int i = 1; i < TasksStackPanel.Children.Count; i++)
+			for(int i = 1; i < MainTasksStackPanel.Children.Count; i++)
+			{
+				MainTasksStackPanel.Children.RemoveAt(i);
+			}
+			for(int i = TasksStackPanel.Children.Count - 1; i != 0; i--)
 			{
 				TasksStackPanel.Children.RemoveAt(i);
 			}

@@ -20,6 +20,11 @@ namespace AssignmentV2
 		/// Выбранный проект.
 		/// </summary>
 		public static ProjectReadModel? SelectProject;
+
+		/// <summary>
+		/// Выбранное задание.
+		/// </summary>
+		public static TaskDbReadModel? SelectTask;
 		#endregion
 
 		#region Public

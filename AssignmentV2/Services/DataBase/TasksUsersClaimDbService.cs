@@ -51,5 +51,26 @@ namespace AssignmentV2.Services.DataBase
 				return null;
 			}
 		}
+
+		public async Task<IEnumerable<UserReadModel>?> GetUsersByTask(Guid taskId)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					return await conn.QueryAsync<UserReadModel>(@"
+					SELECT u.id, u.login, u.password FROM tasks_users_claim tuc
+					JOIN users u ON tuc.user_id = u.id", new
+					{
+						TaskId = taskId,
+					});
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+				return null;
+			}
+		} 
 	}
 }

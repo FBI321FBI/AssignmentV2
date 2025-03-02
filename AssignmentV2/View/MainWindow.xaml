@@ -44,5 +44,6 @@
 		<AdminPanels:AdminPanelUserControl x:Name="AdminPanelUserControl" Grid.Row="1" Visibility="Collapsed"/>
 		<UserControls:TasksUserControl x:Name="TasksUserControl"  Grid.Row="1" Visibility="Collapsed"/>
 		<UserControls:CreateTaskUserControl x:Name="CreateTaskUserControl" Grid.Row="1" Visibility="Collapsed"/>
+		<UserControls:TaskViewUserControl x:Name="TaskViewUserControl" Grid.Row="1" Visibility="Collapsed"/>
 	</Grid>
 </Window>

@@ -90,12 +90,12 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 					Repository.SelectProject = project;
 					var tasks = await taskService.GetTasksByUserId(Repository.User.id);
 					if (tasks is null) return;
+					_mainWindow.TasksUserControl.ClearTasks();
 					foreach (var task in tasks)
 					{
 						_mainWindow.TasksUserControl.AddTaskOnPnael(task.id);
 					}
 					_mainWindow.TasksUserControl.Visibility = Visibility.Visible;
-					MessageBox.Show("Вы открыли проет" + project.id);
 				};
 
 				new ProjectService().AddProjectInRepository(new ProjectInProjectPanelReadModel
