@@ -1,16 +1,14 @@
-﻿using AssignmentV2.ReadModels;
-using AssignmentV2.ReadModels.Projects;
-using AssignmentV2.Services;
-using AssignmentV2.Utilities;
-using AssignmentV2.View.UserControls.ProjectPanel;
-using CommunityToolkit.Mvvm.Input;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using AssignmentV2.ReadModels;
+using AssignmentV2.ReadModels.Projects;
+using AssignmentV2.Services;
+using AssignmentV2.View.UserControls.ProjectPanel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace AssignmentV2.ViewModel.ProjectPanel
 {
@@ -50,7 +48,7 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 		[RelayCommand]
 		private void AddNewProject()
 		{
-			if(_mainProjectPanelUserControl is not null)
+			if (_mainProjectPanelUserControl is not null)
 			{
 				_mainProjectPanelUserControl.EnterNameProjectUserControl.Visibility = Visibility.Visible;
 			}

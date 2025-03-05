@@ -53,10 +53,15 @@ namespace AssignmentV2.View.UserControls
 				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().NameTextBox.Text = currentTask.name;
 				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().DescriptionTextBox.Text = currentTask.description;
 				var users = (await _taskUserClaimDbService.GetUsersByTask(currentTask.id)).Where(x => x.id != Repository.User.id);
-				foreach(var user in users)
+				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().ClearParticipants();
+				foreach (var user in users)
 				{
-					var userFio = (await _usersClaimsDbService.GetUserParameters(user.id)).Where(x => x.parameter_id == Guid.Parse(FIO)).FirstOrDefault().value;
-					MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().AddUserInParticipant(user,userFio);
+					var userTask = (await _taskUserClaimDbService.GetTasksByUserId(user.id)).Where(x => x.task_id == currentTask.id).FirstOrDefault();
+					if(userTask is not null)
+					{
+						var userFio = (await _usersClaimsDbService.GetUserParameters(user.id)).Where(x => x.parameter_id == Guid.Parse(FIO)).FirstOrDefault().value;
+						MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().AddUserInParticipant(user, userFio);
+					}
 				}
 				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().Visibility = Visibility.Visible;
 			};

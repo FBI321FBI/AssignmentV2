@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using AssignmentV2.ReadModels;
 using AssignmentV2.Services;
+using AssignmentV2.Services.DataBase;
 using AssignmentV2.ViewModel.ProjectPanel;
 
 namespace AssignmentV2.Handlers.Events
@@ -38,16 +39,18 @@ namespace AssignmentV2.Handlers.Events
 			}
 		}
 
-		private static void LoadProjects(UserReadModel user)
+		private static async Task LoadProjects(UserReadModel user)
 		{
 			ProjectService projectService = new ProjectService();
+			ProjectDbService projectDbService = new ProjectDbService();
 			ProjectPanelViewModel? projectPanelViewModel = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl?.ProjectPanelUserControl.DataContext as ProjectPanelViewModel;
+			var projects = await projectDbService.GetProjects();
 
-			foreach(var project in user.projects)
+			foreach (var project in projects)
 			{
 				projectPanelViewModel.AddProjectVisually(new ReadModels.Projects.ProjectReadModel
 				{
-					id = project.project_id,
+					id = project.id,
 					name = project.name
 				});
 			}

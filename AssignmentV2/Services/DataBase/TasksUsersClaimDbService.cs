@@ -3,6 +3,7 @@ using AssignmentV2.ReadModels;
 using AssignmentV2.Utilities;
 using Dapper;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace AssignmentV2.Services.DataBase
 {
@@ -59,8 +60,9 @@ namespace AssignmentV2.Services.DataBase
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
 					return await conn.QueryAsync<UserReadModel>(@"
-					SELECT u.id, u.login, u.password FROM tasks_users_claim tuc
-					JOIN users u ON tuc.user_id = u.id", new
+					SELECT DISTINCT u.id, u.login, u.password FROM tasks_users_claim tuc
+					JOIN users u ON tuc.user_id = u.id
+					WHERE tuc.task_id = @TaskId", new
 					{
 						TaskId = taskId,
 					});
@@ -72,5 +74,26 @@ namespace AssignmentV2.Services.DataBase
 				return null;
 			}
 		} 
+
+		public async Task DeleteTaskByUserId(Guid userId, Guid taskId)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					await conn.ExecuteAsync(@"
+					DELETE FROM tasks_users_claim
+					WHERE user_id = @UserId AND task_id = @TaskId", new
+					{
+						UserId = userId,
+						TaskId = taskId
+					});
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+			}
+		}
 	}
 }

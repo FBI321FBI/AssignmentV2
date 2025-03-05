@@ -1,7 +1,11 @@
-﻿using System.IO;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using AssignmentV2.ReadModels;
+using AssignmentV2.Services;
+using AssignmentV2.Services.DataBase;
+using static AssignmentV2.Constants.Claims;
+using static AssignmentV2.Constants.Parameters;
 
 namespace AssignmentV2.View.UserControls
 {
@@ -11,10 +15,26 @@ namespace AssignmentV2.View.UserControls
 	public partial class TaskViewUserControl : UserControl
 	{
 		private List<UserReadModel> usersInParticipant = new List<UserReadModel>();
+		private TasksDbService taskDbService = new TasksDbService();
+		private TaskService taskService = new TaskService();
+		private TasksUsersClaimDbService tasksUsersCalimDbService = new TasksUsersClaimDbService();
+		private UsersDbService usersDbService = new UsersDbService();
+		private UsersClaimsDbService usersClaimsDbService = new UsersClaimsDbService();
+		private TasksUserControl tasksUserControl => MainWindowService.GetUserControlInMainWindow<TasksUserControl>();
+		private MainWindow? mainWindow => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
 
 		public TaskViewUserControl()
 		{
 			InitializeComponent();
+		}
+
+		public void ClearParticipants()
+		{
+			usersInParticipant.Clear();
+			for (int i = 1; i < UsersStackPanel.Children.Count; i++)
+			{
+				UsersStackPanel.Children.RemoveAt(i);
+			}
 		}
 
 		public void AddUserInParticipant(UserReadModel user, string fio)
@@ -37,6 +57,76 @@ namespace AssignmentV2.View.UserControls
 		private void CloseViewButton_Click(object sender, RoutedEventArgs e)
 		{
 			Visibility = Visibility.Collapsed;
+		}
+
+		private async void SaveTaskButton_Click(object sender, RoutedEventArgs e)
+		{
+			await taskDbService.UpdateTaskById(Repository.SelectTask.id, NameTextBox.Text, DescriptionTextBox.Text);
+			var tasks = await taskService.GetTasksByUserId(Repository.User.id);
+			if (tasks is null) return;
+			mainWindow.TasksUserControl.ClearTasks();
+			foreach (var task in tasks)
+			{
+				mainWindow.TasksUserControl.AddTaskOnPnael(task.id);
+			}
+
+			var usersInTask = (await tasksUsersCalimDbService.GetUsersByTask(Repository.SelectTask.id)).Where(x => x.id == Repository.User.id);
+			foreach (var userParticipant in usersInParticipant)
+			{
+				if(usersInTask.Where(x => x.id == userParticipant.id).FirstOrDefault() is not null)
+				{
+					await tasksUsersCalimDbService.CreateTaskUserClaim(new TasksUsersClaimDbReadModel
+					{
+						id = Guid.NewGuid(),
+						user_id = userParticipant.id,
+						task_id = Repository.SelectTask.id,
+						claim_id = Guid.Parse(TASK_PARTICIPANT)
+					});
+				}
+			}
+
+			var users = (await usersDbService.GetAllUsers()).Where(x => x.id != Repository.User?.id).ToList();
+			List<UserReadModel> usersForDelete = new List<UserReadModel>();
+			var notInParcipiants = users.Where(x => !usersInParticipant.Any(y => y.id == x.id));
+			foreach (var notInParcicpiant in notInParcipiants)
+			{
+				usersForDelete.Add(notInParcicpiant);
+			}
+
+			foreach (var item in notInParcipiants)
+			{
+				await tasksUsersCalimDbService.DeleteTaskByUserId(item.id, Repository.SelectTask.id);
+			}
+		}
+
+		private async void AddUserButton_Click(object sender, RoutedEventArgs e)
+		{
+			SelectUserWindow selectUserWindow = new SelectUserWindow();
+			var users = (await usersDbService.GetAllUsers()).Where(x => x.id != Repository.User?.id).ToList();
+			var usersInTasks = (await tasksUsersCalimDbService.GetUsersByTask(Repository.SelectTask.id)).Where(x => x.id != Repository.User.id);
+			List<UserReadModel> usersForAdd = new List<UserReadModel>();
+
+			var notInParcipiants = users.Where(x => !usersInTasks.Any(y => y.id == x.id));
+			foreach(var notInParcicpiant in notInParcipiants)
+			{
+				usersForAdd.Add(notInParcicpiant);
+			}
+
+			await selectUserWindow.LoadUsers(usersForAdd);
+			selectUserWindow.ShowDialog();
+
+			if (selectUserWindow.SelectedUser is not null)
+			{
+				var userFioParameter = (await usersClaimsDbService.GetUserParameters(selectUserWindow.SelectedUser.id)).Where(x => x.parameter_id == Guid.Parse(FIO)).FirstOrDefault();
+				AddUserInParticipant(selectUserWindow.SelectedUser, userFioParameter.value);
+				await tasksUsersCalimDbService.CreateTaskUserClaim(new TasksUsersClaimDbReadModel
+				{
+					id = Guid.NewGuid(),
+					claim_id = Guid.Parse(TASK_PARTICIPANT),
+					task_id = Repository.SelectTask.id,
+					user_id = selectUserWindow.SelectedUser.id,
+				});
+			}
 		}
 	}
 }

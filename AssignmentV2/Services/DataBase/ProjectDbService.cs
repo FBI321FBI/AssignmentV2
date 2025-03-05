@@ -63,5 +63,22 @@ namespace AssignmentV2.Services.DataBase
 				return null;
 			}
 		}
+
+		public async Task<IEnumerable<ProjectReadModel>?> GetProjects()
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					return await conn.QueryAsync<ProjectReadModel>(
+						"SELECT * FROM projects");
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+				return null;
+			}
+		}
 	}
 }

@@ -32,6 +32,27 @@ namespace AssignmentV2.Services.DataBase
 			}
 		}
 
+		public async Task UpdateTaskById(Guid id, string name, string description)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					await conn.ExecuteAsync(@"
+					UPDATE tasks SET name = @Name, description = @Description WHERE id = @Id", new
+					{
+						Id = id,
+						Name = name,
+						Description = description
+					});
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+			}
+		}
+
 		public async Task<TaskDbReadModel?> GetTaskById(Guid taskId)
 		{
 			try

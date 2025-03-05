@@ -26,11 +26,11 @@
 			<Label Content="Участники" Style="{StaticResource LabelDefaultStyle}" Margin="0,0,0,3" FontSize="35"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" Grid.Row="1">
-			<Button x:Name="SaveTaskButton" Content="Сохранить" Width="150" Margin="3" FontSize="25" Style="{StaticResource DefaultButtonStyle}"/>
+			<Button x:Name="SaveTaskButton" Content="Сохранить" Width="150" Margin="3" FontSize="25" Style="{StaticResource DefaultButtonStyle}" Click="SaveTaskButton_Click"/>
 			<Button x:Name="CloseViewButton" Content="Закрыть" Width="150" Margin="3" FontSize="25" Style="{StaticResource DefaultButtonStyle}" Click="CloseViewButton_Click"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-			<Button x:Name="AddUserButton" Content="Добавить" Width="150" FontSize="25" Margin="3" Style="{StaticResource DefaultButtonStyle}"/>
+			<Button x:Name="AddUserButton" Content="Добавить" Width="150" FontSize="25" Margin="3" Style="{StaticResource DefaultButtonStyle}" Click="AddUserButton_Click"/>
 		</StackPanel>
 	</Grid>
 </UserControl>
