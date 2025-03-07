@@ -18,11 +18,12 @@ namespace AssignmentV2.Services.DataBase
 					var projectId = Guid.NewGuid();
 					await conn.ExecuteAsync(
 						@"INSERT INTO projects
-						  VALUES (@Id ,@Name)",
+						  VALUES (@Id ,@Name, @IsDeleted)",
 						new
 						{
 							Id = projectId,
-							Name = project.name
+							Name = project.name,
+							IsDeleted = 0
 						});
 
 					await conn.ExecuteAsync(

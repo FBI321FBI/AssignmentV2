@@ -61,7 +61,7 @@ namespace AssignmentV2.View.UserControls
 
 		private async void SaveTaskButton_Click(object sender, RoutedEventArgs e)
 		{
-			await taskDbService.UpdateTaskById(Repository.SelectTask.id, NameTextBox.Text, DescriptionTextBox.Text);
+			await taskDbService.UpdateTaskById(Repository.SelectTask.id, NameTextBox.Text, DescriptionTextBox.Text, 0);
 			var tasks = await taskService.GetTasksByUserId(Repository.User.id);
 			if (tasks is null) return;
 			mainWindow.TasksUserControl.ClearTasks();
@@ -128,5 +128,20 @@ namespace AssignmentV2.View.UserControls
 				});
 			}
 		}
-	}
+
+		private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+		{
+			var currentTask = Repository.SelectTask;
+			await taskDbService.UpdateTaskById(currentTask.id, currentTask.name, currentTask.description, 1);
+
+			var tasks = (await taskService.GetTasksByUserId(Repository.User.id)).Where(x => x.isDeleted == false);
+			if (tasks is null) return;
+			mainWindow.TasksUserControl.ClearTasks();
+			foreach (var task in tasks)
+			{
+				mainWindow.TasksUserControl.AddTaskOnPnael(task.id);
+			}
+			this.Visibility = Visibility.Collapsed;
+		}
+    }
 }

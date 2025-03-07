@@ -5,6 +5,7 @@ using AssignmentV2.Services;
 using AssignmentV2.Services.DataBase;
 using AssignmentV2.View.UserControls.ProjectPanel;
 using static AssignmentV2.Constants.Parameters;
+using static AssignmentV2.Constants.Claims;
 
 namespace AssignmentV2.View.UserControls
 {
@@ -64,6 +65,16 @@ namespace AssignmentV2.View.UserControls
 					}
 				}
 				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().Visibility = Visibility.Visible;
+
+				if (!Repository.User.isSa)
+				{
+					var task = (await _taskUserClaimDbService.GetTasksByUserId(Repository.User.id)).Where(x => x.task_id == currentTask.id).FirstOrDefault();
+					if(task?.claim_id != Guid.Parse(TASK_OWNER))
+					{
+						MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().SaveTaskButton.Visibility = Visibility.Collapsed;
+						MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().AddUserButton.Visibility = Visibility.Collapsed;
+					}
+				}
 			};
 
 			if (_tasksStackPanels.Last().Children.Count == 6)

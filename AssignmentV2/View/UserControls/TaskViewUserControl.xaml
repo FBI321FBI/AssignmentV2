@@ -28,6 +28,7 @@
 		<StackPanel Orientation="Horizontal" Grid.Row="1">
 			<Button x:Name="SaveTaskButton" Content="Сохранить" Width="150" Margin="3" FontSize="25" Style="{StaticResource DefaultButtonStyle}" Click="SaveTaskButton_Click"/>
 			<Button x:Name="CloseViewButton" Content="Закрыть" Width="150" Margin="3" FontSize="25" Style="{StaticResource DefaultButtonStyle}" Click="CloseViewButton_Click"/>
+			<Button x:Name="DeleteButton" Content="Удалить" Width="150" Margin="3" FontSize="25" Style="{StaticResource DefaultButtonStyle}" Click="DeleteButton_Click"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
 			<Button x:Name="AddUserButton" Content="Добавить" Width="150" FontSize="25" Margin="3" Style="{StaticResource DefaultButtonStyle}" Click="AddUserButton_Click"/>

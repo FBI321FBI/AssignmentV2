@@ -15,6 +15,11 @@ namespace AssignmentV2.ReadModels
 		public string? login { get; set; }
 
 		/// <summary>
+		/// Системный админ.
+		/// </summary>
+		public bool isSa {  get; set; }
+
+		/// <summary>
 		/// Право на создание проектов.
 		/// </summary>
 		public bool isCanCreateProject { get; set; }

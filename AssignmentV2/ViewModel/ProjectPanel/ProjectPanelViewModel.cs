@@ -86,7 +86,7 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 				button.Click += async (sender, e) =>
 				{
 					Repository.SelectProject = project;
-					var tasks = await taskService.GetTasksByUserId(Repository.User.id);
+					var tasks = (await taskService.GetTasksByUserId(Repository.User.id)).Where(x => x.isDeleted == false);
 					if (tasks is null) return;
 					_mainWindow.TasksUserControl.ClearTasks();
 					foreach (var task in tasks)

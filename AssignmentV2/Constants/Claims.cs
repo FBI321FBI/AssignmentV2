@@ -26,5 +26,10 @@
 		/// Участник задачи.
 		/// </summary>
 		public const string TASK_PARTICIPANT = "78836db0-8e52-47a8-8c82-21572199501b";
+
+		/// <summary>
+		/// Системный админ.
+		/// </summary>
+		public const string SA = "1ccb23ae-7710-41a6-80e5-f1205a27ffa9";
 	}
 }

@@ -4,5 +4,6 @@
 	{
 		public Guid id { get; set; }
 		public string name { get; set; } = string.Empty;
+		public bool isDeleted { get; set; }
 	}
 }

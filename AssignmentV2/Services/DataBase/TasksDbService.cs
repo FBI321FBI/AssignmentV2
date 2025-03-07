@@ -1,5 +1,5 @@
 ﻿using System.Data.SqlClient;
-using System.Threading.Tasks;
+using System.Xml.Linq;
 using AssignmentV2.DataBase.Tables;
 using AssignmentV2.ReadModels;
 using AssignmentV2.Utilities;
@@ -16,13 +16,14 @@ namespace AssignmentV2.Services.DataBase
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
 					await conn.ExecuteAsync(@"
-					INSERT INTO tasks(id, project_id, name, description)
-					VALUES (@Id, @ProjectId, @Name, @Description)", new
+					INSERT INTO tasks(id, project_id, name, description, isDeleted)
+					VALUES (@Id, @ProjectId, @Name, @Description, @IsDeleted)", new
 					{
 						Id = task.id,
 						ProjectId = task.project_id,
 						Name = task.name,
 						Description = task.description,
+						IsDeleted = 0
 					});
 				}
 			}
@@ -32,18 +33,36 @@ namespace AssignmentV2.Services.DataBase
 			}
 		}
 
-		public async Task UpdateTaskById(Guid id, string name, string description)
+		public async Task<IEnumerable<TaskDbReadModel>> GetTasks()
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					return await conn.QueryAsync<TaskDbReadModel>(@"
+					SELECT * FROM tasks");
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+				return null;
+			}
+		}
+
+		public async Task UpdateTaskById(Guid id, string name, string description, byte isDeleted)
 		{
 			try
 			{
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
 					await conn.ExecuteAsync(@"
-					UPDATE tasks SET name = @Name, description = @Description WHERE id = @Id", new
+					UPDATE tasks SET name = @Name, description = @Description, isDeleted = @IsDeleted WHERE id = @Id", new
 					{
 						Id = id,
 						Name = name,
-						Description = description
+						Description = description,
+						IsDeleted = isDeleted
 					});
 				}
 			}

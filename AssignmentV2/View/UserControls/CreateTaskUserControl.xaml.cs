@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using AssignmentV2.ReadModels;
 using AssignmentV2.Services;
 using AssignmentV2.Services.DataBase;
+using AssignmentV2.Utilities;
 using AssignmentV2.View.UserControls.ProjectPanel;
 using static AssignmentV2.Constants.Parameters;
 
@@ -16,6 +17,7 @@ namespace AssignmentV2.View.UserControls
 	{
 		#region Properties
 		private TaskService _taskService;
+		private TasksDbService _tasksDbService;
 		private UsersDbService _usersDbService;
 		private UsersClaimsDbService _usersClaimsDbService;
 		private MainWindow _mainWindow => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
@@ -30,6 +32,7 @@ namespace AssignmentV2.View.UserControls
 			_usersDbService = new UsersDbService();
 			_usersInTask = new List<UserReadModel>();
 			_usersClaimsDbService = new UsersClaimsDbService();
+			_tasksDbService = new TasksDbService();
 		}
 
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -40,6 +43,15 @@ namespace AssignmentV2.View.UserControls
 
 		private async void CreateButton_Click(object sender, RoutedEventArgs e)
 		{
+			var tasks = (await _tasksDbService.GetTasks()).Where(x => x.isDeleted == false);
+			foreach(var task in tasks)
+			{
+				if(task.name == NameTextBox.Text)
+				{
+					CustomMessageBox.Information("Задача с таким названием уже создана.");
+					return;
+				}
+			}
 			var taskId = Guid.NewGuid();
 			await _taskService.CreateTask(Repository.User.id, _usersInTask, taskId, Repository.SelectProject.id, NameTextBox.Text, DescriptionTextBox.Text);
 			NameTextBox.Text = "";
