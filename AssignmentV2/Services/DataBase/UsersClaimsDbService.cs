@@ -76,5 +76,30 @@ namespace AssignmentV2.Services.DataBase
 				return null;
 			}
 		}
+
+		public async Task AddParameterForUser(Guid userId, Guid parameterId, string value, Guid dataType)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					await conn.ExecuteAsync(
+						@"INSERT INTO users_parameters(id, user_id, parameter_id, value, data_type)
+						VALUES(@Id, @UserId, @ParameterId, @Value, @DataType);",
+						new
+						{
+							Id = Guid.NewGuid(),
+							UserId = userId,
+							ParameterId = parameterId,
+							Value = value,
+							DataType = dataType
+						});
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+			}
+		}
 	}
 }

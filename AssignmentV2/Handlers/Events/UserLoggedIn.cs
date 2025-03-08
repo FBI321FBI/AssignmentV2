@@ -37,6 +37,11 @@ namespace AssignmentV2.Handlers.Events
 			{
 				_mainWindow.TasksUserControl.AddTaskButton.Visibility = Visibility.Collapsed;
 			}
+
+			if (user.isSa)
+			{
+				_mainWindow.AdminPanelUserControl.Visibility = Visibility.Visible;
+			}
 		}
 
 		private static async Task LoadProjects(UserReadModel user)

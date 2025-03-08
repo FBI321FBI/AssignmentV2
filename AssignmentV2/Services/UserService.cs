@@ -1,6 +1,8 @@
 ﻿using AssignmentV2.ReadModels;
 using AssignmentV2.Services.DataBase;
 using static AssignmentV2.Constants.Claims;
+using static AssignmentV2.Constants.Parameters;
+using static AssignmentV2.Constants.DataTypes;
 
 namespace AssignmentV2.Services
 {
@@ -12,6 +14,7 @@ namespace AssignmentV2.Services
 		#region Properties
 		private UsersClaimsDbService _usersClaimsService;
 		private DataBase.ProjectDbService _projectServiceDb;
+		private UsersDbService _usersDbService;
 		#endregion
 
 		#region .ctor
@@ -19,7 +22,7 @@ namespace AssignmentV2.Services
         {
             _usersClaimsService = new UsersClaimsDbService();
 			_projectServiceDb = new();
-
+			_usersDbService = new UsersDbService();
 		}
         #endregion
 
@@ -39,6 +42,43 @@ namespace AssignmentV2.Services
 		{
 			var projects = await _projectServiceDb.GetProjectsUsersClaimsByUserId(user.id);
 			user.projects = projects;
+		}
+
+		public async Task CreateUser(string login, string password, string fio, bool isCanCreateTask, bool isCanCreateProject, bool isSa)
+		{
+			await _usersDbService.CreateUser(login, password);
+			var userInBd = await _usersDbService.GetUserByLoginAsync(login);
+			await _usersClaimsService.AddParameterForUser(userInBd.id, Guid.Parse(FIO), fio, Guid.Parse(STRING_TYPE));
+
+			if (isCanCreateTask)
+			{
+				await _usersClaimsService.CreateUserClaim(new ReadModels.Tables.UserClaimModel
+				{
+					id = Guid.NewGuid(),
+					user_id = userInBd.id,
+					claim_id = Guid.Parse(TASK_CREATE)
+				});
+			}
+
+			if (isCanCreateProject)
+			{
+				await _usersClaimsService.CreateUserClaim(new ReadModels.Tables.UserClaimModel
+				{
+					id = Guid.NewGuid(),
+					user_id = userInBd.id,
+					claim_id = Guid.Parse(PROJECT_CREATE)
+				});
+			}
+
+			if (isSa)
+			{
+				await _usersClaimsService.CreateUserClaim(new ReadModels.Tables.UserClaimModel
+				{
+					id = Guid.NewGuid(),
+					user_id = userInBd.id,
+					claim_id = Guid.Parse(SA)
+				});
+			}
 		}
 	}
 }

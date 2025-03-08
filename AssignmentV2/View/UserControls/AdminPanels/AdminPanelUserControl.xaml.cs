@@ -13,5 +13,11 @@ namespace AssignmentV2.View.UserControls.AdminPanels
 			AdminPanelViewModel.AdminPanelDefaultWidth = AdminPanelBorder.Width;
 			AdminPanelBorder.Width = 0;
 		}
-	}
+
+		private void CreateUserButton_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			CreateUserWindow createUserWindow = new CreateUserWindow();
+			createUserWindow.ShowDialog();
+        }
+    }
 }

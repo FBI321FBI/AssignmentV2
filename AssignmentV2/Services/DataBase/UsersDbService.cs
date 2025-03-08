@@ -9,6 +9,28 @@ namespace AssignmentV2.Services
 	public class UsersDbService : BaseTable
 	{
 		/// <summary>
+		/// ССоздание пользователя.
+		/// </summary>
+		/// <param name="login">Логин.</param>
+		/// <param name="password">Пароль.</param>
+		/// <returns></returns>
+		public async Task CreateUser(string login, string password)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					await conn.ExecuteAsync("EXEC create_user_proc @Login, @Password",
+						new {Login = login, Password = password});
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+			}
+		}
+
+		/// <summary>
 		/// Получение всех пользователей.
 		/// </summary>
 		/// <returns>Пользователи.</returns>

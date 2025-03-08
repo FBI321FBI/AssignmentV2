@@ -17,7 +17,13 @@
 			<Button Style="{StaticResource DefaultButtonStyle}" Command="{Binding OpenAndCloseAdminPanelCommand}" VerticalAlignment="Center" Content="🔧" MaxHeight="35" MaxWidth="35" FontSize="25" Margin="0,0,1,0"/>
 			<Border x:Name="AdminPanelBorder" Width="205" Style="{StaticResource DefaultBorderStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">
 				<StackPanel x:Name="AdminPanelStackPanel" Orientation="Vertical">
-					<Button Style="{StaticResource DefaultButtonStyle}" Content="Управление пользователями" Margin="5"/>
+					<Button Style="{StaticResource DefaultButtonStyle}" Content="Управление пользователями" Margin="5,5,5,0"/>
+					<Border x:Name="ControlUsersBorder" Style="{StaticResource DefaultBorderStyle}" Margin="3">
+						<StackPanel Orientation="Vertical">
+							<Button Style="{StaticResource DefaultButtonStyle}" Content="Создать" x:Name="CreateUserButton" Margin="3" Click="CreateUserButton_Click"/>
+							<Button Style="{StaticResource DefaultButtonStyle}" Content="Удалить" x:Name="DeleteUserButton" Margin="3"/>
+						</StackPanel>
+					</Border>
 				</StackPanel>
 			</Border>
 		</StackPanel>
