@@ -21,7 +21,7 @@
 					<Border x:Name="ControlUsersBorder" Style="{StaticResource DefaultBorderStyle}" Margin="3">
 						<StackPanel Orientation="Vertical">
 							<Button Style="{StaticResource DefaultButtonStyle}" Content="Создать" x:Name="CreateUserButton" Margin="3" Click="CreateUserButton_Click"/>
-							<Button Style="{StaticResource DefaultButtonStyle}" Content="Удалить" x:Name="DeleteUserButton" Margin="3"/>
+							<Button Style="{StaticResource DefaultButtonStyle}" Content="Удалить" x:Name="DeleteUserButton" Margin="3" Click="DeleteUserButton_Click"/>
 						</StackPanel>
 					</Border>
 				</StackPanel>

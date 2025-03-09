@@ -30,6 +30,22 @@ namespace AssignmentV2.Services
 			}
 		}
 
+		public async Task DeleteUser(Guid id)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					await conn.ExecuteAsync("DELETE FROM users WHERE @Id = id",
+						new { Id = id });
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+			}
+		}
+
 		/// <summary>
 		/// Получение всех пользователей.
 		/// </summary>

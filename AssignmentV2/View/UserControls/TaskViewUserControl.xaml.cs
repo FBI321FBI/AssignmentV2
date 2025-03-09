@@ -62,7 +62,7 @@ namespace AssignmentV2.View.UserControls
 		private async void SaveTaskButton_Click(object sender, RoutedEventArgs e)
 		{
 			await taskDbService.UpdateTaskById(Repository.SelectTask.id, NameTextBox.Text, DescriptionTextBox.Text, 0);
-			var tasks = await taskService.GetTasksByUserId(Repository.User.id);
+			var tasks = (await taskService.GetTasksByUserId(Repository.User.id)).Where(x => x.isDeleted == false);
 			if (tasks is null) return;
 			mainWindow.TasksUserControl.ClearTasks();
 			foreach (var task in tasks)
