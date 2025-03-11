@@ -49,7 +49,7 @@ namespace AssignmentV2.Handlers.Events
 			ProjectService projectService = new ProjectService();
 			ProjectDbService projectDbService = new ProjectDbService();
 			ProjectPanelViewModel? projectPanelViewModel = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl?.ProjectPanelUserControl.DataContext as ProjectPanelViewModel;
-			var projects = await projectDbService.GetProjects();
+			var projects = (await projectDbService.GetProjects()).Where(x => x.isDeleted == false);
 
 			foreach (var project in projects)
 			{

@@ -26,11 +26,11 @@ namespace AssignmentV2.ViewModel
 		/// Удаление выбранного проекта.
 		/// </summary>
 		[RelayCommand]
-		public void RemoveProject()
+		public async void RemoveProject()
 		{
 			if (SelectedProject is not null)
 			{
-				_service.RemoveProjectById(SelectedProject.id);
+				await _service.RemoveProjectById(SelectedProject.id);
 				OpenOrCloseRenameStuckPanel();
 			}
 		}
@@ -54,13 +54,13 @@ namespace AssignmentV2.ViewModel
 		/// Переименовывает проект.
 		/// </summary>
 		[RelayCommand]
-		public void RenameProject()
+		public async void RenameProject()
 		{
 			if (_userControl is null) return;
 
 			if (SelectedProject is not null)
 			{
-				_service.RenameProjectById(SelectedProject.id, _userControl.RenameTextBox.Text);
+				await _service.RenameProjectById(SelectedProject.id, _userControl.RenameTextBox.Text);
 				OpenOrCloseRenameStuckPanel();
 			}
 		}

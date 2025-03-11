@@ -91,6 +91,7 @@ namespace AssignmentV2.View.UserControls
 				button.Click += (e, a) =>
 				{
 					UsersStackPanel.Children.Remove(button);
+					_usersInTask.Remove(selectUserWindow.SelectedUser);
 				};
 
 				UsersStackPanel.Children.Add(button);

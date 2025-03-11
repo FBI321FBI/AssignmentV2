@@ -1,4 +1,5 @@
 ﻿using AssignmentV2.ReadModels;
+using AssignmentV2.Services.DataBase;
 using AssignmentV2.View.UserControls.ProjectPanel;
 using System.Windows;
 
@@ -8,6 +9,7 @@ namespace AssignmentV2.Services
 	{
 		#region Properties
 		private ProjectPanelUserControl? _projectPanelUserControl => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl?.ProjectPanelUserControl;
+		private ProjectDbService projectDbService => new ProjectDbService();
 		#endregion
 
 		public void RemoveProject(ProjectInProjectPanelReadModel project)
@@ -15,13 +17,19 @@ namespace AssignmentV2.Services
 			Repository.Projects.Remove(project);
 		}
 
-		public void RemoveProjectById(Guid id)
+		public async Task RemoveProjectById(Guid id)
 		{
 			var projectForDelete = GetProjectById(id);
 			if (projectForDelete is not null)
 			{
 				Repository.Projects.Remove(projectForDelete);
 				_projectPanelUserControl.ProjectsStackPanel.Children.Remove(projectForDelete.Button);
+				await projectDbService.UpdateProject(new ReadModels.Projects.ProjectReadModel
+				{
+					id = projectForDelete.Project.id,
+					name = projectForDelete.Project.name,
+					isDeleted = true
+				});
 			}
 		}
 
@@ -35,12 +43,18 @@ namespace AssignmentV2.Services
 			return Repository.Projects.Where(x => x.Project.id == id).FirstOrDefault();
 		}
 
-		public void RenameProjectById(Guid id, string newName)
+		public async Task RenameProjectById(Guid id, string newName)
 		{
 			var projectForRename = GetProjectById(id);
 			if (projectForRename is not null)
 			{
 				projectForRename.Button.Content = newName;
+				await projectDbService.UpdateProject(new ReadModels.Projects.ProjectReadModel
+				{
+					id = projectForRename.Project.id,
+					name = newName,
+					isDeleted = false
+				});
 			}
 		}
 	}

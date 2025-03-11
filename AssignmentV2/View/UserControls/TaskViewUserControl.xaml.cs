@@ -31,10 +31,14 @@ namespace AssignmentV2.View.UserControls
 		public void ClearParticipants()
 		{
 			usersInParticipant.Clear();
-			for (int i = 1; i < UsersStackPanel.Children.Count; i++)
+			UsersStackPanel.Children.Clear();
+			UsersStackPanel.Children.Add(new Label
 			{
-				UsersStackPanel.Children.RemoveAt(i);
-			}
+				Content = "Участники",
+				Margin = new Thickness(0,0,0,3),
+				FontSize = 35,
+				Style = (Style)Application.Current.Resources["LabelDefaultStyle"]
+			});
 		}
 
 		public void AddUserInParticipant(UserReadModel user, string fio)
@@ -62,7 +66,7 @@ namespace AssignmentV2.View.UserControls
 		private async void SaveTaskButton_Click(object sender, RoutedEventArgs e)
 		{
 			await taskDbService.UpdateTaskById(Repository.SelectTask.id, NameTextBox.Text, DescriptionTextBox.Text, 0);
-			var tasks = (await taskService.GetTasksByUserId(Repository.User.id)).Where(x => x.isDeleted == false);
+			var tasks = (await taskService.GetTasksByUserId(Repository.User.id)).Where(x => x.isDeleted == false && x.project_id == Repository.SelectProject.id);
 			if (tasks is null) return;
 			mainWindow.TasksUserControl.ClearTasks();
 			foreach (var task in tasks)

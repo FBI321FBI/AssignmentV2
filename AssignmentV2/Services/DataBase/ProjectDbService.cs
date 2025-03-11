@@ -15,13 +15,12 @@ namespace AssignmentV2.Services.DataBase
 			{
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
-					var projectId = Guid.NewGuid();
 					await conn.ExecuteAsync(
 						@"INSERT INTO projects
 						  VALUES (@Id ,@Name, @IsDeleted)",
 						new
 						{
-							Id = projectId,
+							Id = project.id,
 							Name = project.name,
 							IsDeleted = 0
 						});
@@ -32,10 +31,30 @@ namespace AssignmentV2.Services.DataBase
 						new
 						{
 							Id = Guid.NewGuid(),
-							ProjectId = projectId,
+							ProjectId = project.id,
 							UserId = Repository.User.id,
 							ClaimID = Claims.PROJECT_OWNER,
 						});
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+			}
+		}
+
+		public async Task UpdateProject(ProjectReadModel project)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					await conn.ExecuteAsync("UPDATE projects SET name = @Name, isDeleted = @IsDeleted WHERE id = @Id", new
+					{
+						Id = project.id,
+						Name = project.name,
+						IsDeleted = project.isDeleted == true ? 1 : 0,
+					});
 				}
 			}
 			catch (Exception ex)

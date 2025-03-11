@@ -22,6 +22,7 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 		private MainProjectPanelUserControl? _mainProjectPanelUserControl => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault()?.MainProjectPanelUserControl;
 		private MainWindow? _mainWindow => Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
 		private TaskService taskService => new TaskService();
+		private UsersDbService usersDbService => new UsersDbService();
 		#endregion
 
 		#region .ctor
@@ -70,8 +71,12 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 					Margin = new Thickness(0, 0, 5, 0)
 				};
 
-				button.MouseRightButtonDown += (sender, e) =>
+				button.MouseRightButtonDown += async (sender, e) =>
 				{
+					if (Repository.User.isSa == false)
+					{
+						return;
+					}
 					var mouseX = e.GetPosition(null).X;
 					var mouseY = e.GetPosition(null).Y;
 
@@ -86,7 +91,7 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 				button.Click += async (sender, e) =>
 				{
 					Repository.SelectProject = project;
-					var tasks = (await taskService.GetTasksByUserId(Repository.User.id)).Where(x => x.isDeleted == false);
+					var tasks = (await taskService.GetTasksByUserId(Repository.User.id)).Where(x => x.isDeleted == false && x.project_id == Repository.SelectProject.id);
 					if (tasks is null) return;
 					_mainWindow.TasksUserControl.ClearTasks();
 					foreach (var task in tasks)

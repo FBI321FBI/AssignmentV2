@@ -51,6 +51,7 @@ namespace AssignmentV2.View.UserControls
 			button.Click += async (s, e) =>
 			{
 				Repository.SelectTask = currentTask;
+
 				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().NameTextBox.Text = currentTask.name;
 				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().DescriptionTextBox.Text = currentTask.description;
 				var users = (await _taskUserClaimDbService.GetUsersByTask(currentTask.id)).Where(x => x.id != Repository.User.id);
@@ -73,6 +74,7 @@ namespace AssignmentV2.View.UserControls
 					{
 						MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().SaveTaskButton.Visibility = Visibility.Collapsed;
 						MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().AddUserButton.Visibility = Visibility.Collapsed;
+						MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().DeleteButton.Visibility = Visibility.Collapsed;
 					}
 				}
 			};

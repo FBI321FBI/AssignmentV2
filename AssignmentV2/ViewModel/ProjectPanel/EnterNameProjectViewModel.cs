@@ -23,15 +23,16 @@ namespace AssignmentV2.ViewModel.ProjectPanel
 		{
 			if(_projectPanelViewModel is not null)
 			{
+				var projectId = Guid.NewGuid();
 				_projectPanelViewModel.AddProjectVisually(new ProjectReadModel
 				{
-					id = Guid.NewGuid(),
+					id = projectId,
 					name = _userControl?.ProjectNameTextBox.Text ?? "🤔"
 				});
 				_userControl.Visibility = Visibility.Collapsed;
 
 				_mainWindow.LoadingUserControl.Start();
-				await new ProjectDbService().CreateProject(new ProjectReadModel { name = _userControl?.ProjectNameTextBox.Text });
+				await new ProjectDbService().CreateProject(new ProjectReadModel {id = projectId, name = _userControl?.ProjectNameTextBox.Text });
 				_mainWindow.LoadingUserControl.Stop();
 
 				_mainProjectPanelUserControl.EnterNameProjectUserControl.ProjectNameTextBox.Clear();
