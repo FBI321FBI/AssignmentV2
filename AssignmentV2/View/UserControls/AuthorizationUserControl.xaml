@@ -38,8 +38,8 @@
                 </Grid>
                 <Button Style="{StaticResource DefaultButtonStyle}" Command="{Binding AuthorizationCommand}" Content="Войти" Width="100" Height="30" FontSize="20" HorizontalAlignment="Left" Margin="5,10"/>
 				<StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-					<Button Style="{StaticResource DefaultButtonStyle}" Content="Забыл пароль" Width="110" FontSize="15" HorizontalAlignment="Left" Margin="5,0,0,5"/>
-					<Button Style="{StaticResource DefaultButtonStyle}" Content="Помощь" Width="110" FontSize="15" HorizontalAlignment="Left" Margin="5,0,0,5"/>
+					<Button Visibility="Collapsed" Style="{StaticResource DefaultButtonStyle}" Content="Забыл пароль" Width="110" FontSize="15" HorizontalAlignment="Left" Margin="5,0,0,5"/>
+					<Button Visibility="Collapsed" Style="{StaticResource DefaultButtonStyle}" Content="Помощь" Width="110" FontSize="15" HorizontalAlignment="Left" Margin="5,0,0,5"/>
 				</StackPanel>
 			</StackPanel>
 		</Border>
