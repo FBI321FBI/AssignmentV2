@@ -14,14 +14,14 @@ namespace AssignmentV2.Services
 		/// <param name="login">Логин.</param>
 		/// <param name="password">Пароль.</param>
 		/// <returns></returns>
-		public async Task CreateUser(string login, string password)
+		public async Task CreateUser(Guid id, string login, string password)
 		{
 			try
 			{
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
-					await conn.ExecuteAsync("EXEC create_user_proc @Login, @Password",
-						new {Login = login, Password = password});
+					await conn.ExecuteAsync("EXEC create_user_proc @Id, @Login, @Password",
+						new {Id = id, Login = login, Password = password});
 				}
 			}
 			catch (Exception ex)

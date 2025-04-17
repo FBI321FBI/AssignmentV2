@@ -44,9 +44,9 @@ namespace AssignmentV2.Services
 			user.projects = projects;
 		}
 
-		public async Task CreateUser(string login, string password, string fio, bool isCanCreateTask, bool isCanCreateProject, bool isSa)
+		public async Task CreateUser(Guid id, string login, string password, string fio, bool isCanCreateTask, bool isCanCreateProject, bool isSa)
 		{
-			await _usersDbService.CreateUser(login, password);
+			await _usersDbService.CreateUser(id, login, password);
 			var userInBd = await _usersDbService.GetUserByLoginAsync(login);
 			await _usersClaimsService.AddParameterForUser(userInBd.id, Guid.Parse(FIO), fio, Guid.Parse(STRING_TYPE));
 

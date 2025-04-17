@@ -42,7 +42,7 @@ namespace AssignmentV2.View
 			var user = (await _userDbService.GetAllUsers()).Where(x => x.login == LoginTextBox.Text).FirstOrDefault();
 			if(user is null)
 			{
-				await _userService.CreateUser(LoginTextBox.Text, PasswordTextBox.Text, FioTextBox.Text, CreateTasksCheckBox.IsChecked ?? false, CreateProjectsCheckBox.IsChecked ?? false, AdminCheckBox.IsChecked ?? false);
+				await _userService.CreateUser(Guid.NewGuid(), LoginTextBox.Text, PasswordTextBox.Text, FioTextBox.Text, CreateTasksCheckBox.IsChecked ?? false, CreateProjectsCheckBox.IsChecked ?? false, AdminCheckBox.IsChecked ?? false);
 				this.Close();
 			}
 			else
