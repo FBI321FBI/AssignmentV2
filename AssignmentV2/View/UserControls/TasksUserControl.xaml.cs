@@ -52,6 +52,8 @@ namespace AssignmentV2.View.UserControls
 			{
 				Repository.SelectTask = currentTask;
 
+				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().CreatedDateTextBlock.Text = currentTask.created_date.Date.ToString("dd.MM.yyyy");
+				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().EndDateDatePicker.SelectedDate = currentTask.end_date;
 				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().NameTextBox.Text = currentTask.name;
 				MainWindowService.GetUserControlInMainWindow<TaskViewUserControl>().DescriptionTextBox.Text = currentTask.description;
 				var users = (await _taskUserClaimDbService.GetUsersByTask(currentTask.id)).Where(x => x.id != Repository.User.id);

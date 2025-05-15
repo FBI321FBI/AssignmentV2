@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using AssignmentV2.ReadModels;
 using AssignmentV2.Services;
 using AssignmentV2.Services.DataBase;
+using AssignmentV2.Utilities;
 using static AssignmentV2.Constants.Claims;
 using static AssignmentV2.Constants.Parameters;
 
@@ -65,7 +66,13 @@ namespace AssignmentV2.View.UserControls
 
 		private async void SaveTaskButton_Click(object sender, RoutedEventArgs e)
 		{
-			await taskDbService.UpdateTaskById(Repository.SelectTask.id, NameTextBox.Text, DescriptionTextBox.Text, 0);
+			var newEndDate = EndDateDatePicker.SelectedDate;
+			if(newEndDate == null)
+			{
+				CustomMessageBox.Information("Укажите дату окончания задачи.");
+				return;
+			}
+			await taskDbService.UpdateTaskById(Repository.SelectTask.id, NameTextBox.Text, DescriptionTextBox.Text, newEndDate ?? DateTime.Now, 0);
 			var tasks = (await taskService.GetTasksByUserId(Repository.User.id)).Where(x => x.isDeleted == false && x.project_id == Repository.SelectProject.id);
 			if (tasks is null) return;
 			mainWindow.TasksUserControl.ClearTasks();
@@ -136,7 +143,7 @@ namespace AssignmentV2.View.UserControls
 		private async void DeleteButton_Click(object sender, RoutedEventArgs e)
 		{
 			var currentTask = Repository.SelectTask;
-			await taskDbService.UpdateTaskById(currentTask.id, currentTask.name, currentTask.description, 1);
+			await taskDbService.UpdateTaskById(currentTask.id, currentTask.name, currentTask.description, currentTask.end_date, 1);
 
 			var tasks = (await taskService.GetTasksByUserId(Repository.User.id)).Where(x => x.isDeleted == false);
 			if (tasks is null) return;

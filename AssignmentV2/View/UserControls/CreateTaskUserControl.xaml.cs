@@ -53,7 +53,13 @@ namespace AssignmentV2.View.UserControls
 				}
 			}
 			var taskId = Guid.NewGuid();
-			await _taskService.CreateTask(Repository.User.id, _usersInTask, taskId, Repository.SelectProject.id, NameTextBox.Text, DescriptionTextBox.Text);
+			var endDate = EndDateDatePicker.SelectedDate;
+			if(endDate == null)
+			{
+				CustomMessageBox.Information("Укажите дату окончания задачи.");
+				return;
+			}
+			await _taskService.CreateTask(Repository.User.id, _usersInTask, taskId, Repository.SelectProject.id, NameTextBox.Text, DescriptionTextBox.Text, DateTime.Now, endDate ?? DateTime.Now);
 			NameTextBox.Text = "";
 			DescriptionTextBox.Text = "";
 			_mainWindow.TasksUserControl.AddTaskOnPnael(taskId);

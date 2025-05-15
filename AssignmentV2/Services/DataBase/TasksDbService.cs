@@ -16,13 +16,15 @@ namespace AssignmentV2.Services.DataBase
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
 					await conn.ExecuteAsync(@"
-					INSERT INTO tasks(id, project_id, name, description, isDeleted)
-					VALUES (@Id, @ProjectId, @Name, @Description, @IsDeleted)", new
+					INSERT INTO tasks(id, project_id, name, description, created_date, end_date, isDeleted)
+					VALUES (@Id, @ProjectId, @Name, @Description, @CreatedDate, @EndDate, @IsDeleted)", new
 					{
 						Id = task.id,
 						ProjectId = task.project_id,
 						Name = task.name,
 						Description = task.description,
+						CreatedDate = task.created_date,
+						EndDate = task.end_date,
 						IsDeleted = 0
 					});
 				}
@@ -50,19 +52,40 @@ namespace AssignmentV2.Services.DataBase
 			}
 		}
 
-		public async Task UpdateTaskById(Guid id, string name, string description, byte isDeleted)
+		public async Task UpdateTaskById(Guid id, string name, string description, DateTime endDate, byte isDeleted)
 		{
 			try
 			{
 				using (SqlConnection conn = new SqlConnection(ConnectionString))
 				{
 					await conn.ExecuteAsync(@"
-					UPDATE tasks SET name = @Name, description = @Description, isDeleted = @IsDeleted WHERE id = @Id", new
+					UPDATE tasks SET name = @Name, description = @Description, end_date = @EndDate, isDeleted = @IsDeleted WHERE id = @Id", new
 					{
 						Id = id,
 						Name = name,
 						Description = description,
+						EndDate = endDate,
 						IsDeleted = isDeleted
+					});
+				}
+			}
+			catch (Exception ex)
+			{
+				CustomMessageBox.Information(ex.Message);
+			}
+		}
+
+		public async Task DeleteTaskById(Guid id)
+		{
+			try
+			{
+				using (SqlConnection conn = new SqlConnection(ConnectionString))
+				{
+					await conn.ExecuteAsync(@"
+					UPDATE tasks SET isDeleted = @IsDeleted WHERE id = @Id", new
+					{
+						Id = id,
+						IsDeleted = 1
 					});
 				}
 			}

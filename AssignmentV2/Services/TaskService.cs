@@ -23,7 +23,7 @@ namespace AssignmentV2.Services
 		#endregion
 
 		#region Public
-		public async Task CreateTask(Guid owner, IEnumerable<UserReadModel> participants, Guid taskId, Guid projectId, string name, string description)
+		public async Task CreateTask(Guid owner, IEnumerable<UserReadModel> participants, Guid taskId, Guid projectId, string name, string description, DateTime createdDate, DateTime endDate)
 		{
 			await _taskDbService.CreateTask(new TaskDbReadModel
 			{
@@ -31,6 +31,8 @@ namespace AssignmentV2.Services
 				project_id = projectId,
 				name = name,
 				description = description,
+				created_date = createdDate,
+				end_date = endDate,
 			});
 
 			await _tasksUsersClaimDbService.CreateTaskUserClaim(new TasksUsersClaimDbReadModel
